@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word of Sweets Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <main class="admin-shell">
+    <section class="login-card" id="loginCard">
+      <h1>Admin Login</h1>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p id="loginMessage"></p>
+    </section>
+
+    <section class="dashboard hidden" id="dashboard">
+      <div class="dashboard-top">
+        <h1>Products Admin</h1>
+        <button id="logoutBtn" type="button">Logout</button>
+      </div>
+
+      <form id="productForm" class="panel">
+        <h2>Add Product</h2>
+
+        <input type="text" id="slug" placeholder="slug" required />
+        <input type="text" id="nameEn" placeholder="Name EN" required />
+        <input type="text" id="nameAr" placeholder="Name AR" required />
+
+        <textarea id="descEn" placeholder="Description EN"></textarea>
+        <textarea id="descAr" placeholder="Description AR"></textarea>
+
+        <input type="text" id="imageUrl" placeholder="Image URL or relative path like images/cakes.jpg" />
+        <input type="number" id="sortOrder" placeholder="Sort Order" value="0" />
+
+        <label class="checkbox">
+          <input type="checkbox" id="isActive" checked />
+          Active
+        </label>
+
+        <button type="submit">Save Product</button>
+      </form>
+
+      <section class="panel">
+        <h2>Products</h2>
+        <div id="productsList"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
