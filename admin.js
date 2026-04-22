@@ -1,4 +1,4 @@
-const supabase = window.supabase;
+const supabase = window.supabaseClient;
 
 const appLoader = document.getElementById("appLoader");
 const adminShell = document.getElementById("adminShell");
@@ -71,6 +71,15 @@ function fillForm(product) {
 
 async function checkSession() {
   try {
+    if (!supabase) {
+      console.error("Supabase client not found");
+      showMessage("Supabase client not loaded.", true);
+      loginCard.style.display = "block";
+      dashboard.style.display = "none";
+      showApp();
+      return;
+    }
+
     const { data, error } = await supabase.auth.getSession();
 
     if (error) {
