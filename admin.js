@@ -31,20 +31,23 @@ loginForm.addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password
   });
 
+  console.log("LOGIN RESPONSE:", data, error); // 👈 ADD THIS
+
   if (error) {
-    loginMessage.textContent = error.message;
+    alert(error.message); // 👈 better than silent fail
     return;
   }
+
+  alert("Login success"); // 👈 CONFIRM LOGIN
 
   loginMessage.textContent = "";
   await checkSession();
 });
-
 logoutBtn.addEventListener("click", async () => {
   await supabase.auth.signOut();
   await checkSession();
