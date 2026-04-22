@@ -1,19 +1,6 @@
 const db = window.db;
 
-console.log("DB client:", db);
-
-async function testConnection() {
-  const { data, error } = await db.from("products").select("*").limit(1);
-
-  if (error) {
-    console.error("Supabase test error:", error);
-    return;
-  }
-
-  console.log("Supabase test success:", data);
-}
-
-testConnection();
+// Elements
 const appLoader = document.getElementById("appLoader");
 const adminShell = document.getElementById("adminShell");
 
@@ -23,294 +10,113 @@ const loginForm = document.getElementById("loginForm");
 const loginMessage = document.getElementById("loginMessage");
 const logoutBtn = document.getElementById("logoutBtn");
 
-const productForm = document.getElementById("productForm");
 const productsList = document.getElementById("productsList");
 
-const formTitle = document.getElementById("formTitle");
-const cancelEditBtn = document.getElementById("cancelEditBtn");
-const saveProductBtn = document.getElementById("saveProductBtn");
-
-const productIdInput = document.getElementById("productId");
-const slugInput = document.getElementById("slug");
-const nameEnInput = document.getElementById("nameEn");
-const nameArInput = document.getElementById("nameAr");
-const descEnInput = document.getElementById("descEn");
-const descArInput = document.getElementById("descAr");
-const imageUrlInput = document.getElementById("imageUrl");
-const sortOrderInput = document.getElementById("sortOrder");
-const isActiveInput = document.getElementById("isActive");
-
-let productsCache = [];
-
-function showApp() {
-  adminShell.style.display = "block";
-  appLoader.style.display = "none";
-}
-
-function showMessage(message = "", isError = false) {
-  if (!loginMessage) return;
+// Helper
+function showMessage(message, isError = false) {
   loginMessage.textContent = message;
-  loginMessage.style.color = isError ? "#b04b4b" : "#2f7a45";
+  loginMessage.style.color = isError ? "red" : "green";
 }
 
-function resetForm() {
-  productForm.reset();
-  productIdInput.value = "";
-  sortOrderInput.value = 0;
-  isActiveInput.checked = true;
-  formTitle.textContent = "Add Product";
-  saveProductBtn.textContent = "Save Product";
-  cancelEditBtn.classList.add("hidden");
-  slugInput.disabled = false;
-}
-
-function fillForm(product) {
-  productIdInput.value = product.id;
-  slugInput.value = product.slug || "";
-  nameEnInput.value = product.name_en || "";
-  nameArInput.value = product.name_ar || "";
-  descEnInput.value = product.desc_en || "";
-  descArInput.value = product.desc_ar || "";
-  imageUrlInput.value = product.image_url || "";
-  sortOrderInput.value = product.sort_order ?? 0;
-  isActiveInput.checked = !!product.is_active;
-
-  formTitle.textContent = "Edit Product";
-  saveProductBtn.textContent = "Update Product";
-  cancelEditBtn.classList.remove("hidden");
-  slugInput.disabled = true;
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
+// 🔥 CHECK SESSION
 async function checkSession() {
   try {
-    if (!supabase) {
-      console.error("Supabase client not found");
-      showMessage("Supabase client not loaded.", true);
-      loginCard.style.display = "block";
-      dashboard.style.display = "none";
-      showApp();
-      return;
-    }
+    const {
+      data: { session },
+      error,
+    } = await db.auth.getSession();
 
-    const { data, error } = await db.auth.getSession();
+    if (error) throw error;
 
-    if (error) {
-      console.error("Session error:", error);
-      showMessage(error.message, true);
-      loginCard.style.display = "block";
-      dashboard.style.display = "none";
-      showApp();
-      return;
-    }
+    appLoader.classList.add("hidden");
+    adminShell.classList.remove("hidden");
 
-    if (data.session) {
-      loginCard.style.display = "none";
-      dashboard.style.display = "block";
+    if (session) {
+      loginCard.classList.add("hidden");
+      dashboard.classList.remove("hidden");
       await loadProducts();
     } else {
-      loginCard.style.display = "block";
-      dashboard.style.display = "none";
+      loginCard.classList.remove("hidden");
+      dashboard.classList.add("hidden");
     }
+  } catch (error) {
+    console.error("checkSession failed:", error);
+    showMessage("Failed to load session", true);
 
-    showApp();
-  } catch (err) {
-    console.error("checkSession failed:", err);
-    showMessage(err.message || "Failed to load session", true);
-    loginCard.style.display = "block";
-    dashboard.style.display = "none";
-    showApp();
+    appLoader.classList.add("hidden");
+    adminShell.classList.remove("hidden");
+    loginCard.classList.remove("hidden");
   }
 }
 
+// 🔥 LOGIN
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  try {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
+  try {
     const { error } = await db.auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
-    if (error) {
-      showMessage(error.message, true);
-      alert(error.message);
-      return;
-    }
+    if (error) throw error;
 
-    showMessage("");
-    await checkSession();
-  } catch (err) {
-    console.error("Login failed:", err);
-    alert(err.message || "Login failed");
+    showMessage("Login successful");
+    loginCard.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+
+    await loadProducts();
+  } catch (error) {
+    console.error("Login failed:", error);
+    showMessage(error.message, true);
   }
 });
 
+// 🔥 LOGOUT
 logoutBtn.addEventListener("click", async () => {
   try {
     const { error } = await db.auth.signOut();
+    if (error) throw error;
 
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    await checkSession();
-  } catch (err) {
-    console.error("Logout failed:", err);
-    alert(err.message || "Logout failed");
+    dashboard.classList.add("hidden");
+    loginCard.classList.remove("hidden");
+    showMessage("Logged out");
+  } catch (error) {
+    console.error("Logout failed:", error);
   }
 });
 
-cancelEditBtn.addEventListener("click", () => {
-  resetForm();
-});
-
-productForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  try {
-    const payload = {
-      name_en: nameEnInput.value.trim(),
-      name_ar: nameArInput.value.trim(),
-      desc_en: descEnInput.value.trim(),
-      desc_ar: descArInput.value.trim(),
-      image_url: imageUrlInput.value.trim(),
-      sort_order: Number(sortOrderInput.value || 0),
-      is_active: isActiveInput.checked
-    };
-
-    const productId = productIdInput.value.trim();
-
-    if (!productId) {
-      payload.slug = slugInput.value.trim();
-    }
-
-    let response;
-
-    if (productId) {
-      response = await supabase
-        .from("products")
-        .update(payload)
-        .eq("id", productId);
-    } else {
-      response = await supabase
-        .from("products")
-        .insert([payload]);
-    }
-
-    if (response.error) {
-      alert(response.error.message);
-      return;
-    }
-
-    resetForm();
-    await loadProducts();
-  } catch (err) {
-    console.error("Save product failed:", err);
-    alert(err.message || "Could not save product");
-  }
-});
-
-async function deleteProduct(productId, productName) {
-  const confirmed = window.confirm(`Delete "${productName}"?`);
-  if (!confirmed) return;
-
-  try {
-    const { error } = await supabase
-      .from("products")
-      .delete()
-      .eq("id", productId);
-
-    if (error) {
-      alert(error.message);
-      return;
-    }
-
-    if (productIdInput.value === String(productId)) {
-      resetForm();
-    }
-
-    await loadProducts();
-  } catch (err) {
-    console.error("Delete failed:", err);
-    alert(err.message || "Could not delete product");
-  }
-}
-
-function renderProducts(products) {
-  productsList.innerHTML = "";
-
-  if (!products.length) {
-    productsList.innerHTML = "<p>No products found.</p>";
-    return;
-  }
-
-  products.forEach((product) => {
-    const item = document.createElement("div");
-    item.className = "product-admin-card";
-
-    item.innerHTML = `
-      <div class="product-admin-top">
-        <div>
-          <strong>${product.name_en}</strong><br>
-          <small>${product.name_ar}</small>
-        </div>
-        <div class="product-admin-actions">
-          <button class="small-btn edit-btn" type="button" data-id="${product.id}">Edit</button>
-          <button class="small-btn delete-btn" type="button" data-id="${product.id}">Delete</button>
-        </div>
-      </div>
-
-      <div class="product-admin-meta"><b>Slug:</b> ${product.slug}</div>
-      <div class="product-admin-meta"><b>Active:</b> ${product.is_active}</div>
-      <div class="product-admin-meta"><b>Sort Order:</b> ${product.sort_order ?? 0}</div>
-      <div class="product-admin-meta"><b>Image:</b> ${product.image_url || "-"}</div>
-      <div class="product-admin-meta"><b>Description EN:</b> ${product.desc_en || "-"}</div>
-      <div class="product-admin-meta"><b>Description AR:</b> ${product.desc_ar || "-"}</div>
-    `;
-
-    productsList.appendChild(item);
-  });
-
-  productsList.querySelectorAll(".edit-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const product = productsCache.find((item) => item.id === Number(btn.dataset.id));
-      if (product) fillForm(product);
-    });
-  });
-
-  productsList.querySelectorAll(".delete-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const product = productsCache.find((item) => item.id === Number(btn.dataset.id));
-      if (product) deleteProduct(product.id, product.name_en);
-    });
-  });
-}
-
+// 🔥 LOAD PRODUCTS
 async function loadProducts() {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from("products")
       .select("*")
       .order("sort_order", { ascending: true });
 
-    if (error) {
-      productsList.innerHTML = `<p>${error.message}</p>`;
-      return;
-    }
+    if (error) throw error;
 
-    productsCache = data || [];
-    renderProducts(productsCache);
-  } catch (err) {
-    console.error("Load products failed:", err);
-    productsList.innerHTML = `<p>${err.message || "Could not load products"}</p>`;
+    renderProducts(data);
+  } catch (error) {
+    console.error("Load products failed:", error);
   }
 }
 
-resetForm();
+// 🔥 RENDER PRODUCTS
+function renderProducts(products) {
+  if (!productsList) return;
+
+  productsList.innerHTML = "";
+
+  products.forEach((product) => {
+    const div = document.createElement("div");
+    div.textContent = `${product.name_en} (${product.slug})`;
+    productsList.appendChild(div);
+  });
+}
+
+// INIT
 checkSession();
