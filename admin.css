@@ -110,11 +110,38 @@ button {
   cursor: pointer;
 }
 
-.dashboard-top {
+.secondary-btn,
+.small-btn {
+  background: #efe6da;
+  color: #2c241f;
+}
+
+.small-btn.delete-btn {
+  background: #f8dede;
+  color: #8f2f2f;
+}
+
+.dashboard-top,
+.panel-head,
+.product-admin-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+}
+
+.dashboard-top {
   margin-bottom: 20px;
+}
+
+.checkbox {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.checkbox input {
+  width: auto;
 }
 
 #loginMessage {
@@ -123,14 +150,49 @@ button {
   min-height: 20px;
 }
 
+.product-admin-card {
+  border: 1px solid #e6ddd2;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #fcfaf7;
+}
+
+.product-admin-top {
+  align-items: flex-start;
+}
+
+.product-admin-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.product-admin-meta {
+  font-size: 0.92rem;
+  margin-top: 6px;
+  color: #5f554d;
+  word-break: break-word;
+}
+
 @media (max-width: 700px) {
   .admin-shell {
     padding: 16px;
   }
 
-  .dashboard-top {
+  .dashboard-top,
+  .panel-head,
+  .product-admin-top {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+  }
+
+  .product-admin-actions {
+    width: 100%;
   }
 }
