@@ -21,7 +21,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 form {
@@ -42,6 +42,7 @@ textarea {
   border: 1px solid #d8cfc4;
   border-radius: 12px;
   background: #fff;
+  box-sizing: border-box;
 }
 
 textarea {
@@ -70,6 +71,12 @@ button {
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: flex-start;
+}
+
+#loginMessage {
+  margin-top: 12px;
+  color: #b04b4b;
 }
 
 .product-admin-card {
@@ -78,11 +85,6 @@ button {
   padding: 14px;
   margin-bottom: 12px;
   background: #fcfaf7;
-}
-
-#loginMessage {
-  margin-top: 12px;
-  color: #b04b4b;
 }
 
 .panel-head {
@@ -95,6 +97,9 @@ button {
 
 .secondary-btn,
 .small-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 14px;
   border: none;
   border-radius: 999px;
@@ -102,6 +107,9 @@ button {
   color: #2c241f;
   font-weight: 700;
   cursor: pointer;
+  min-width: 80px;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .small-btn.delete-btn {
@@ -117,20 +125,30 @@ button {
   margin-bottom: 10px;
 }
 
+.product-admin-top > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
 .product-admin-actions {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: 160px;
+  justify-content: flex-end;
+}
+
+.product-admin-actions button {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .product-admin-meta {
   font-size: 0.92rem;
   margin-bottom: 6px;
   word-break: break-word;
-}
-
-.hidden {
-  display: none !important;
 }
 
 .app-loader {
@@ -171,5 +189,25 @@ button {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-top,
+  .panel-head,
+  .product-admin-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-admin-actions {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .small-btn {
+    width: auto;
   }
 }

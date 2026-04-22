@@ -74,7 +74,7 @@ async function checkSession() {
     const { data, error } = await supabase.auth.getSession();
 
     if (error) {
-      console.error(error);
+      console.error("Session error:", error);
       showMessage(error.message, true);
       loginCard.style.display = "block";
       dashboard.style.display = "none";
@@ -93,7 +93,7 @@ async function checkSession() {
 
     showApp();
   } catch (err) {
-    console.error(err);
+    console.error("checkSession failed:", err);
     showMessage(err.message || "Failed to load session", true);
     loginCard.style.display = "block";
     dashboard.style.display = "none";
@@ -104,33 +104,43 @@ async function checkSession() {
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+  try {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-  if (error) {
-    showMessage(error.message, true);
-    alert(error.message);
-    return;
+    if (error) {
+      showMessage(error.message, true);
+      alert(error.message);
+      return;
+    }
+
+    showMessage("");
+    await checkSession();
+  } catch (err) {
+    console.error("Login failed:", err);
+    alert(err.message || "Login failed");
   }
-
-  showMessage("");
-  await checkSession();
 });
 
 logoutBtn.addEventListener("click", async () => {
-  const { error } = await supabase.auth.signOut();
+  try {
+    const { error } = await supabase.auth.signOut();
 
-  if (error) {
-    alert(error.message);
-    return;
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    await checkSession();
+  } catch (err) {
+    console.error("Logout failed:", err);
+    alert(err.message || "Logout failed");
   }
-
-  await checkSession();
 });
 
 cancelEditBtn.addEventListener("click", () => {
@@ -140,69 +150,73 @@ cancelEditBtn.addEventListener("click", () => {
 productForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const payload = {
-    name_en: nameEnInput.value.trim(),
-    name_ar: nameArInput.value.trim(),
-    desc_en: descEnInput.value.trim(),
-    desc_ar: descArInput.value.trim(),
-    image_url: imageUrlInput.value.trim(),
-    sort_order: Number(sortOrderInput.value || 0),
-    is_active: isActiveInput.checked
-  };
+  try {
+    const payload = {
+      name_en: nameEnInput.value.trim(),
+      name_ar: nameArInput.value.trim(),
+      desc_en: descEnInput.value.trim(),
+      desc_ar: descArInput.value.trim(),
+      image_url: imageUrlInput.value.trim(),
+      sort_order: Number(sortOrderInput.value || 0),
+      is_active: isActiveInput.checked
+    };
 
-  const productId = productIdInput.value.trim();
+    const productId = productIdInput.value.trim();
 
-  if (!productId) {
-    payload.slug = slugInput.value.trim();
+    if (!productId) {
+      payload.slug = slugInput.value.trim();
+    }
+
+    let response;
+
+    if (productId) {
+      response = await supabase
+        .from("products")
+        .update(payload)
+        .eq("id", productId);
+    } else {
+      response = await supabase
+        .from("products")
+        .insert([payload]);
+    }
+
+    if (response.error) {
+      alert(response.error.message);
+      return;
+    }
+
+    resetForm();
+    await loadProducts();
+  } catch (err) {
+    console.error("Save product failed:", err);
+    alert(err.message || "Could not save product");
   }
-
-  let error;
-
-  if (productId) {
-    const response = await supabase
-      .from("products")
-      .update(payload)
-      .eq("id", productId);
-
-    error = response.error;
-  } else {
-    const response = await supabase
-      .from("products")
-      .insert([payload]);
-
-    error = response.error;
-  }
-
-  if (error) {
-    alert(error.message);
-    return;
-  }
-
-  resetForm();
-  await loadProducts();
-}
-
-);
+});
 
 async function deleteProduct(productId, productName) {
   const confirmed = window.confirm(`Delete "${productName}"?`);
   if (!confirmed) return;
 
-  const { error } = await supabase
-    .from("products")
-    .delete()
-    .eq("id", productId);
+  try {
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", productId);
 
-  if (error) {
-    alert(error.message);
-    return;
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    if (productIdInput.value === String(productId)) {
+      resetForm();
+    }
+
+    await loadProducts();
+  } catch (err) {
+    console.error("Delete failed:", err);
+    alert(err.message || "Could not delete product");
   }
-
-  if (productIdInput.value === String(productId)) {
-    resetForm();
-  }
-
-  await loadProducts();
 }
 
 function renderProducts(products) {
@@ -256,18 +270,23 @@ function renderProducts(products) {
 }
 
 async function loadProducts() {
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("sort_order", { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("sort_order", { ascending: true });
 
-  if (error) {
-    productsList.innerHTML = `<p>${error.message}</p>`;
-    return;
+    if (error) {
+      productsList.innerHTML = `<p>${error.message}</p>`;
+      return;
+    }
+
+    productsCache = data || [];
+    renderProducts(productsCache);
+  } catch (err) {
+    console.error("Load products failed:", err);
+    productsList.innerHTML = `<p>${err.message || "Could not load products"}</p>`;
   }
-
-  productsCache = data || [];
-  renderProducts(productsCache);
 }
 
 resetForm();
