@@ -84,3 +84,51 @@ button {
   margin-top: 12px;
   color: #b04b4b;
 }
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.secondary-btn,
+.small-btn {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 999px;
+  background: #efe6da;
+  color: #2c241f;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.small-btn.delete-btn {
+  background: #f8dede;
+  color: #8f2f2f;
+}
+
+.product-admin-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.product-admin-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.product-admin-meta {
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+.hidden {
+  display: none !important;
+}

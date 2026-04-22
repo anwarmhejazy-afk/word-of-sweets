@@ -27,7 +27,12 @@
       </div>
 
       <form id="productForm" class="panel">
-        <h2>Add Product</h2>
+        <div class="panel-head">
+          <h2 id="formTitle">Add Product</h2>
+          <button class="secondary-btn hidden" id="cancelEditBtn" type="button">Cancel Edit</button>
+        </div>
+
+        <input type="hidden" id="productId" />
 
         <input type="text" id="slug" placeholder="slug" required />
         <input type="text" id="nameEn" placeholder="Name EN" required />
@@ -49,7 +54,7 @@
           Active
         </label>
 
-        <button type="submit">Save Product</button>
+        <button type="submit" id="saveProductBtn">Save Product</button>
       </form>
 
       <section class="panel">
