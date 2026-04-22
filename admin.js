@@ -9,24 +9,54 @@ const loginMessage = document.getElementById("loginMessage");
 const logoutBtn = document.getElementById("logoutBtn");
 const productsList = document.getElementById("productsList");
 
-function showMessage(message, isError = false) {
+function showMessage(message = "", isError = false) {
   if (!loginMessage) return;
   loginMessage.textContent = message;
-  loginMessage.style.color = isError ? "#c0392b" : "#2e7d32";
+  loginMessage.style.color = isError ? "#b04b4b" : "#2e7d32";
+}
+
+function hideLoader() {
+  if (appLoader) appLoader.classList.add("hidden");
+}
+
+function showShell() {
+  if (adminShell) adminShell.classList.remove("hidden");
 }
 
 function showLogin() {
-  if (appLoader) appLoader.classList.add("hidden");
-  if (adminShell) adminShell.classList.remove("hidden");
+  hideLoader();
+  showShell();
+
   if (loginCard) loginCard.classList.remove("hidden");
   if (dashboard) dashboard.classList.add("hidden");
 }
 
 function showDashboard() {
-  if (appLoader) appLoader.classList.add("hidden");
-  if (adminShell) adminShell.classList.remove("hidden");
+  hideLoader();
+  showShell();
+
   if (loginCard) loginCard.classList.add("hidden");
   if (dashboard) dashboard.classList.remove("hidden");
+}
+
+function renderProducts(products) {
+  if (!productsList) return;
+
+  if (!products || !products.length) {
+    productsList.innerHTML = "<p>No products found.</p>";
+    return;
+  }
+
+  productsList.innerHTML = products
+    .map(
+      (product) => `
+        <div class="panel" style="margin-bottom:12px;">
+          <strong>${product.name_en || "No name"}</strong><br>
+          <small>Slug: ${product.slug || "-"}</small>
+        </div>
+      `
+    )
+    .join("");
 }
 
 async function loadProducts() {
@@ -42,29 +72,9 @@ async function loadProducts() {
   } catch (error) {
     console.error("Load products failed:", error);
     if (productsList) {
-      productsList.innerHTML = `<p style="color:#c0392b;">Failed to load products.</p>`;
+      productsList.innerHTML = "<p style='color:#b04b4b;'>Failed to load products.</p>";
     }
   }
-}
-
-function renderProducts(products) {
-  if (!productsList) return;
-
-  if (!products.length) {
-    productsList.innerHTML = `<p>No products found.</p>`;
-    return;
-  }
-
-  productsList.innerHTML = products
-    .map(
-      (product) => `
-        <div class="panel" style="margin-bottom:12px;">
-          <strong>${product.name_en || "No name"}</strong><br />
-          <small>Slug: ${product.slug || "-"}</small>
-        </div>
-      `
-    )
-    .join("");
 }
 
 async function checkSession() {
@@ -96,6 +106,8 @@ if (loginForm) {
     const email = document.getElementById("email")?.value.trim();
     const password = document.getElementById("password")?.value;
 
+    showMessage("");
+
     try {
       const { error } = await db.auth.signInWithPassword({
         email,
@@ -104,7 +116,6 @@ if (loginForm) {
 
       if (error) throw error;
 
-      showMessage("");
       showDashboard();
       await loadProducts();
     } catch (error) {

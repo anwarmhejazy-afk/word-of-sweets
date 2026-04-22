@@ -5,150 +5,8 @@ body {
   color: #2c241f;
 }
 
-.admin-shell {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-.login-card,
-.panel {
-  background: #fff;
-  border-radius: 18px;
-  padding: 20px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  margin-bottom: 20px;
-}
-
 .hidden {
   display: none !important;
-}
-
-form {
-  display: grid;
-  gap: 12px;
-}
-
-input,
-textarea,
-button {
-  font: inherit;
-}
-
-input,
-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #d8cfc4;
-  border-radius: 12px;
-  background: #fff;
-  box-sizing: border-box;
-}
-
-textarea {
-  min-height: 90px;
-  resize: vertical;
-}
-
-button {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #9f7a4f, #7c8570);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.dashboard-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.checkbox {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-#loginMessage {
-  margin-top: 12px;
-  color: #b04b4b;
-}
-
-.product-admin-card {
-  border: 1px solid #e6ddd2;
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 12px;
-  background: #fcfaf7;
-}
-
-.panel-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.secondary-btn,
-.small-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 999px;
-  background: #efe6da;
-  color: #2c241f;
-  font-weight: 700;
-  cursor: pointer;
-  min-width: 80px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.small-btn.delete-btn {
-  background: #f8dede;
-  color: #8f2f2f;
-}
-
-.product-admin-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 10px;
-}
-
-.product-admin-top > div:first-child {
-  flex: 1;
-  min-width: 0;
-}
-
-.product-admin-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  min-width: 160px;
-  justify-content: flex-end;
-}
-
-.product-admin-actions button {
-  display: inline-flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.product-admin-meta {
-  font-size: 0.92rem;
-  margin-bottom: 6px;
-  word-break: break-word;
 }
 
 .app-loader {
@@ -159,6 +17,10 @@ button {
   justify-content: center;
   background: #f6f2ea;
   z-index: 9999;
+}
+
+.app-loader.hidden {
+  display: none !important;
 }
 
 .loader-card {
@@ -192,22 +54,83 @@ button {
   }
 }
 
+.admin-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.login-card,
+.panel {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+.dashboard {
+  display: block;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d8cfc4;
+  border-radius: 12px;
+  background: #fff;
+  box-sizing: border-box;
+  color: #2c241f;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #9f7a4f, #7c8570);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#loginMessage {
+  margin-top: 12px;
+  color: #b04b4b;
+  min-height: 20px;
+}
+
 @media (max-width: 700px) {
-  .dashboard-top,
-  .panel-head,
-  .product-admin-top {
+  .admin-shell {
+    padding: 16px;
+  }
+
+  .dashboard-top {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .product-admin-actions {
-    width: 100%;
-    min-width: 0;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .small-btn {
-    width: auto;
+    gap: 12px;
   }
 }

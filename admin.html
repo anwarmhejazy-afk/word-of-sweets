@@ -15,20 +15,20 @@
     </div>
   </div>
 
-  <main class="admin-shell hidden" id="adminShell">
-    <section class="login-card hidden" id="loginCard">
+  <main id="adminShell" class="admin-shell hidden">
+    <section id="loginCard" class="login-card hidden">
       <h1>Admin Login</h1>
 
       <form id="loginForm">
-        <input type="email" id="email" placeholder="Email" required />
-        <input type="password" id="password" placeholder="Password" required />
+        <input type="email" id="email" placeholder="Email" autocomplete="email" required />
+        <input type="password" id="password" placeholder="Password" autocomplete="current-password" required />
         <button type="submit">Login</button>
       </form>
 
       <p id="loginMessage"></p>
     </section>
 
-    <section class="dashboard hidden" id="dashboard">
+    <section id="dashboard" class="dashboard hidden">
       <div class="dashboard-top">
         <h1>Products Admin</h1>
         <button id="logoutBtn" type="button">Logout</button>
