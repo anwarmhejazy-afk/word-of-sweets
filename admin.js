@@ -1,5 +1,19 @@
-const supabase = window.supabaseClient;
+const db = window.db;
 
+console.log("DB client:", db);
+
+async function testConnection() {
+  const { data, error } = await db.from("products").select("*").limit(1);
+
+  if (error) {
+    console.error("Supabase test error:", error);
+    return;
+  }
+
+  console.log("Supabase test success:", data);
+}
+
+testConnection();
 const appLoader = document.getElementById("appLoader");
 const adminShell = document.getElementById("adminShell");
 
@@ -80,7 +94,7 @@ async function checkSession() {
       return;
     }
 
-    const { data, error } = await supabase.auth.getSession();
+    const { data, error } = await db.auth.getSession();
 
     if (error) {
       console.error("Session error:", error);
@@ -117,7 +131,7 @@ loginForm.addEventListener("submit", async (e) => {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await db.auth.signInWithPassword({
       email,
       password
     });
@@ -138,7 +152,7 @@ loginForm.addEventListener("submit", async (e) => {
 
 logoutBtn.addEventListener("click", async () => {
   try {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await db.auth.signOut();
 
     if (error) {
       alert(error.message);
