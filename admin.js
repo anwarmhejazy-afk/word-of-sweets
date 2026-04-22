@@ -1,5 +1,8 @@
 const supabase = window.supabase;
 
+const appLoader = document.getElementById("appLoader");
+const adminShell = document.getElementById("adminShell");
+
 const loginCard = document.getElementById("loginCard");
 const dashboard = document.getElementById("dashboard");
 const loginForm = document.getElementById("loginForm");
@@ -24,6 +27,11 @@ const sortOrderInput = document.getElementById("sortOrder");
 const isActiveInput = document.getElementById("isActive");
 
 let productsCache = [];
+
+function showApp() {
+  adminShell.style.display = "block";
+  appLoader.style.display = "none";
+}
 
 function showMessage(message = "", isError = false) {
   if (!loginMessage) return;
@@ -62,21 +70,34 @@ function fillForm(product) {
 }
 
 async function checkSession() {
-  const { data, error } = await supabase.auth.getSession();
+  try {
+    const { data, error } = await supabase.auth.getSession();
 
-  if (error) {
-    console.error(error);
-    showMessage(error.message, true);
-    return;
-  }
+    if (error) {
+      console.error(error);
+      showMessage(error.message, true);
+      loginCard.style.display = "block";
+      dashboard.style.display = "none";
+      showApp();
+      return;
+    }
 
-  if (data.session) {
-    loginCard.style.display = "none";
-    dashboard.style.display = "block";
-    await loadProducts();
-  } else {
+    if (data.session) {
+      loginCard.style.display = "none";
+      dashboard.style.display = "block";
+      await loadProducts();
+    } else {
+      loginCard.style.display = "block";
+      dashboard.style.display = "none";
+    }
+
+    showApp();
+  } catch (err) {
+    console.error(err);
+    showMessage(err.message || "Failed to load session", true);
     loginCard.style.display = "block";
     dashboard.style.display = "none";
+    showApp();
   }
 }
 
@@ -159,7 +180,9 @@ productForm.addEventListener("submit", async (e) => {
 
   resetForm();
   await loadProducts();
-});
+}
+
+);
 
 async function deleteProduct(productId, productName) {
   const confirmed = window.confirm(`Delete "${productName}"?`);
