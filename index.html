@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word of Sweets | Dubai Luxury Desserts</title>
+  <meta
+    name="description"
+    content="Luxury homemade desserts in Dubai with bilingual Arabic and English ordering, flavor selection, prices, gift options, cart, and WhatsApp ordering."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-wrap">
+      <div class="brand-logo-wrap"></div>
+
+      <div class="topbar-actions">
+        <button class="cart-toggle" id="cartToggle" type="button" aria-label="Open cart">
+          <span class="cart-icon">🛍️</span>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+
+        <div class="language-switch">
+          <button class="lang-btn" data-lang="ar">عربي</button>
+          <button class="lang-btn active" data-lang="en">English</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home">
+      <div class="container hero-inner">
+        <div class="hero-logo-wrap reveal">
+          <img src="images/Logo.png" alt="Word of Sweets main logo" class="hero-logo" />
+        </div>
+
+        <p
+          class="hero-tag reveal"
+          data-en="Dubai Luxury Dessert Atelier"
+          data-ar="أتيليه حلويات فاخر في دبي"
+        >
+          Dubai Luxury Dessert Atelier
+        </p>
+
+        <h1
+          class="hero-title reveal"
+          data-en="Luxury Homemade Desserts Crafted for Elegant Moments"
+          data-ar="حلويات منزلية فاخرة مصممة للحظات الأنيقة"
+        >
+          Luxury Homemade Desserts Crafted for Elegant Moments
+        </h1>
+
+        <p
+          class="hero-subtitle reveal"
+          data-en="Premium cakes, cookies, Swiss rolls, fruit tarts, cinnamon rolls, cheesecakes, dessert cups, and more with boutique presentation and direct WhatsApp ordering."
+          data-ar="كيكات وكوكيز وسويس رول وتارت فواكه وسينامون رول وتشيزكيك وأكواب حلى والمزيد بتقديم بوتيك فاخر وطلب مباشر عبر واتساب."
+        >
+          Premium cakes, cookies, Swiss rolls, fruit tarts, cinnamon rolls, cheesecakes, dessert cups, and more with boutique presentation and direct WhatsApp ordering.
+        </p>
+
+        <div class="hero-buttons reveal">
+          <a
+            href="https://wa.me/971528112120"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-whatsapp"
+            data-en="Order via WhatsApp"
+            data-ar="اطلب عبر واتساب"
+          >
+            Order via WhatsApp
+          </a>
+        </div>
+
+        <div class="hero-divider reveal">
+          <span></span>
+          <i></i>
+          <span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="products section" id="products">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 data-en="Signature Collection" data-ar="التشكيلة المميزة">
+            Signature Collection
+          </h2>
+          <p
+            data-en="A refined menu of boutique desserts designed for gifting, sweet tables, events, and premium celebrations."
+            data-ar="قائمة راقية من الحلويات البوتيكية المصممة للهدايا وطاولات الحلوى والمناسبات والاحتفالات الفاخرة."
+          >
+            A refined menu of boutique desserts designed for gifting, sweet tables, events, and premium celebrations.
+          </p>
+        </div>
+
+        <div class="product-grid">
+          <article
+            class="product-card reveal"
+            data-product="cakes"
+            data-name-en="Celebration Cakes"
+            data-name-ar="كيكات المناسبات"
+            data-desc-en="Luxury celebration cakes made with elegant finishes and premium flavors."
+            data-desc-ar="كيكات مناسبات فاخرة بتشطيبات أنيقة ونكهات مميزة."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/cakes.jpg" alt="Celebration Cakes" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Celebration Cakes" data-ar="كيكات المناسبات">Celebration Cakes</h3>
+              <p class="product-text" data-en="Luxury celebration cakes made with elegant finishes and premium flavors." data-ar="كيكات مناسبات فاخرة بتشطيبات أنيقة ونكهات مميزة.">
+                Luxury celebration cakes made with elegant finishes and premium flavors.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="cookies"
+            data-name-en="Cookies"
+            data-name-ar="كوكيز"
+            data-desc-en="Soft premium cookies with rich fillings and boutique-style presentation."
+            data-desc-ar="كوكيز فاخر طري بحشوات غنية وتقديم أنيق."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/cookies.jpg" alt="Cookies" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Cookies" data-ar="كوكيز">Cookies</h3>
+              <p class="product-text" data-en="Soft premium cookies with rich fillings and boutique-style presentation." data-ar="كوكيز فاخر طري بحشوات غنية وتقديم أنيق.">
+                Soft premium cookies with rich fillings and boutique-style presentation.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="swiss-roll"
+            data-name-en="Swiss Roll"
+            data-name-ar="سويس رول"
+            data-desc-en="Soft rolled sponge cakes with creamy fillings in premium flavor combinations."
+            data-desc-ar="سويس رول إسفنجي طري بحشوات كريمية ونكهات فاخرة."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/swiss roll.jpg" alt="Swiss Roll" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Swiss Roll" data-ar="سويس رول">Swiss Roll</h3>
+              <p class="product-text" data-en="Soft rolled sponge cakes with creamy fillings in premium flavor combinations." data-ar="سويس رول إسفنجي طري بحشوات كريمية ونكهات فاخرة.">
+                Soft rolled sponge cakes with creamy fillings in premium flavor combinations.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="fruit-tarts"
+            data-name-en="Fruit Tarts"
+            data-name-ar="تارت الفواكه"
+            data-desc-en="Mini tart shells topped with fresh fruit and smooth cream filling."
+            data-desc-ar="تارت صغير محشو بكريمة ناعمة ومزين بالفواكه الطازجة."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/Small tart mix.jpg" alt="Fruit Tarts" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Fruit Tarts" data-ar="تارت الفواكه">Fruit Tarts</h3>
+              <p class="product-text" data-en="Mini tart shells topped with fresh fruit and smooth cream filling." data-ar="تارت صغير محشو بكريمة ناعمة ومزين بالفواكه الطازجة.">
+                Mini tart shells topped with fresh fruit and smooth cream filling.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="cinnamon-rolls"
+            data-name-en="Cinnamon Rolls"
+            data-name-ar="سينامون رول"
+            data-desc-en="Fresh soft rolls with classic cinnamon flavor and premium boutique presentation."
+            data-desc-ar="لفائف سينامون طازجة وطرية بنكهة السينامون الكلاسيكية وتقديم فاخر."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/cinnamon rolls.jpg" alt="Cinnamon Rolls" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Cinnamon Rolls" data-ar="سينامون رول">Cinnamon Rolls</h3>
+              <p class="product-text" data-en="Fresh soft rolls with classic cinnamon flavor and premium boutique presentation." data-ar="لفائف سينامون طازجة وطرية بنكهة السينامون الكلاسيكية وتقديم فاخر.">
+                Fresh soft rolls with classic cinnamon flavor and premium boutique presentation.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="mini-cheesecakes"
+            data-name-en="Mini Cheesecakes"
+            data-name-ar="ميني تشيزكيك"
+            data-desc-en="Elegant mini cheesecakes in boutique flavors for dessert tables and boxes."
+            data-desc-ar="ميني تشيزكيك أنيق بنكهات مميزة لطاولات الحلوى والبوكسات."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/Small cheesecake.jpg" alt="Mini Cheesecakes" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Mini Cheesecakes" data-ar="ميني تشيزكيك">Mini Cheesecakes</h3>
+              <p class="product-text" data-en="Elegant mini cheesecakes in boutique flavors for dessert tables and boxes." data-ar="ميني تشيزكيك أنيق بنكهات مميزة لطاولات الحلوى والبوكسات.">
+                Elegant mini cheesecakes in boutique flavors for dessert tables and boxes.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="dessert-cups"
+            data-name-en="Dessert Cups"
+            data-name-ar="أكواب الحلى"
+            data-desc-en="Layered premium dessert cups prepared in elegant flavors and textures."
+            data-desc-ar="أكواب حلى بطبقات فاخرة ونكهات وقوامات مميزة."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/cups.jpg" alt="Dessert Cups" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Dessert Cups" data-ar="أكواب الحلى">Dessert Cups</h3>
+              <p class="product-text" data-en="Layered premium dessert cups prepared in elegant flavors and textures." data-ar="أكواب حلى بطبقات فاخرة ونكهات وقوامات مميزة.">
+                Layered premium dessert cups prepared in elegant flavors and textures.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+
+          <article
+            class="product-card reveal"
+            data-product="tiramisu-cubes"
+            data-name-en="Tiramisu Cubes"
+            data-name-ar="مكعبات تيراميسو"
+            data-desc-en="Rich tiramisu cubes with classic tiramisu flavor and premium presentation."
+            data-desc-ar="مكعبات تيراميسو غنية بنكهة التيراميسو الكلاسيكية وتقديم فاخر."
+            data-price-note-en="Flavor prices shown inside View Options"
+            data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+          >
+            <div class="product-image-wrap">
+              <img src="images/cube tiramisu.jpg" alt="Tiramisu Cubes" class="product-image" />
+            </div>
+            <div class="product-body">
+              <h3 data-en="Tiramisu Cubes" data-ar="مكعبات تيراميسو">Tiramisu Cubes</h3>
+              <p class="product-text" data-en="Rich tiramisu cubes with classic tiramisu flavor and premium presentation." data-ar="مكعبات تيراميسو غنية بنكهة التيراميسو الكلاسيكية وتقديم فاخر.">
+                Rich tiramisu cubes with classic tiramisu flavor and premium presentation.
+              </p>
+              <div class="product-note" data-en="Flavor prices shown inside View Options" data-ar="أسعار النكهات موجودة داخل عرض الخيارات">
+                Flavor prices shown inside View Options
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">View Options</button>
+                <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">Order via WhatsApp</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta section">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2 data-en="Place Your Luxury Dessert Order" data-ar="اطلب تشكيلتك الفاخرة">
+            Place Your Luxury Dessert Order
+          </h2>
+          <p
+            data-en="Choose your sweet, select the flavor and price, add gift packaging if needed, add to cart, then send everything directly through WhatsApp."
+            data-ar="اختر الحلى وحدد النكهة والسعر وأضف تغليف الهدية إذا رغبت ثم أضف إلى السلة وأرسل كل التفاصيل مباشرة عبر واتساب."
+          >
+            Choose your sweet, select the flavor and price, add gift packaging if needed, add to cart, then send everything directly through WhatsApp.
+          </p>
+          <a
+            href="https://wa.me/971528112120"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-light"
+            data-en="Order on WhatsApp"
+            data-ar="اطلب عبر واتساب"
+          >
+            Order on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-wrap">
+      <p data-en="Premium homemade desserts crafted with care in Dubai" data-ar="حلويات منزلية فاخرة مصنوعة بعناية في دبي">
+        Premium homemade desserts crafted with care in Dubai
+      </p>
+    </div>
+  </footer>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">×</button>
+
+      <div class="modal-grid">
+        <div class="modal-image-side">
+          <img id="modalImage" src="" alt="" class="modal-image" />
+        </div>
+
+        <div class="modal-content-side">
+          <h2 id="modalTitle" class="modal-title"></h2>
+          <p id="modalDescription" class="modal-description"></p>
+
+          <div class="option-group">
+            <h3 class="option-title" data-en="Choose Flavor" data-ar="اختر النكهة">Choose Flavor</h3>
+            <div class="flavor-grid" id="flavorOptions"></div>
+          </div>
+
+          <div class="option-group">
+            <h3 class="option-title" data-en="Gift Options" data-ar="خيارات التغليف والهدايا">Gift Options</h3>
+            <div class="option-grid" id="giftOptions"></div>
+          </div>
+
+          <div class="option-group">
+            <h3 class="option-title" data-en="Quantity" data-ar="الكمية">Quantity</h3>
+            <div class="quantity-row">
+              <button class="qty-btn" id="decreaseQty" type="button">-</button>
+              <span class="qty-number" id="quantityValue">1</span>
+              <button class="qty-btn" id="increaseQty" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-add-cart" id="addToCartBtn" type="button" data-en="Add to Cart" data-ar="أضف إلى السلة">
+              Add to Cart
+            </button>
+            <button class="btn btn-whatsapp modal-order-btn" id="sendOrderBtn" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">
+              Order via WhatsApp
+            </button>
+          </div>
+
+          <div class="modal-summary">
+            <div class="summary-row">
+              <span data-en="Selected Item" data-ar="الصنف المختار">Selected Item</span>
+              <strong id="summaryProduct"></strong>
+            </div>
+            <div class="summary-row">
+              <span data-en="Flavor" data-ar="النكهة">Flavor</span>
+              <strong id="summaryFlavor">-</strong>
+            </div>
+            <div class="summary-row">
+              <span data-en="Flavor Price" data-ar="سعر النكهة">Flavor Price</span>
+              <strong id="summaryPrice">-</strong>
+            </div>
+            <div class="summary-row">
+              <span data-en="Gift Option" data-ar="خيار الهدية">Gift Option</span>
+              <strong id="summaryGift">-</strong>
+            </div>
+            <div class="summary-row">
+              <span data-en="Gift Price" data-ar="سعر الهدية">Gift Price</span>
+              <strong id="summaryGiftPrice">-</strong>
+            </div>
+            <div class="summary-row">
+              <span data-en="Quantity" data-ar="الكمية">Quantity</span>
+              <strong id="summaryQty">1</strong>
+            </div>
+            <div class="summary-row summary-total-row">
+              <span data-en="Estimated Total" data-ar="الإجمالي التقريبي">Estimated Total</span>
+              <strong id="summaryTotal">-</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <h2 data-en="Your Cart" data-ar="سلة المشتريات">Your Cart</h2>
+      <button class="cart-close" id="cartClose" type="button" aria-label="Close cart">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-empty" id="cartEmpty" data-en="Your cart is empty." data-ar="سلة المشتريات فارغة.">
+      Your cart is empty.
+    </div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span data-en="Total" data-ar="الإجمالي">Total</span>
+        <strong id="cartTotal">0 AED</strong>
+      </div>
+
+      <button class="btn btn-whatsapp cart-checkout-btn" id="cartCheckoutBtn" type="button" data-en="Checkout on WhatsApp" data-ar="إرسال الطلب عبر واتساب">
+        Checkout on WhatsApp
+      </button>
+    </div>
+  </aside>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
