@@ -1,3 +1,5 @@
+const db = window.db;
+
 const whatsappNumber = "971528112120";
 const body = document.body;
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -36,6 +38,8 @@ const cartTotal = document.getElementById("cartTotal");
 const cartEmpty = document.getElementById("cartEmpty");
 const cartCheckoutBtn = document.getElementById("cartCheckoutBtn");
 
+const productsContainer = document.getElementById("productsContainer");
+
 const productData = {
   "cakes": {
     image: "images/cakes.jpg",
@@ -50,7 +54,6 @@ const productData = {
       { en: "Premium Presentation", ar: "تقديم فاخر", priceEn: "35 AED", priceAr: "35 درهم", priceValue: 35 }
     ]
   },
-
   "cookies": {
     image: "images/cookies.jpg",
     flavors: [
@@ -64,7 +67,6 @@ const productData = {
       { en: "Premium Cookie Box", ar: "بوكس كوكيز فاخر", priceEn: "20 AED", priceAr: "20 درهم", priceValue: 20 }
     ]
   },
-
   "swiss-roll": {
     image: "images/swiss roll.jpg",
     flavors: [
@@ -78,7 +80,6 @@ const productData = {
       { en: "Premium Roll Box", ar: "علبة سويس رول فاخرة", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
     ]
   },
-
   "fruit-tarts": {
     image: "images/Small tart mix.jpg",
     flavors: [
@@ -92,7 +93,6 @@ const productData = {
       { en: "Premium Tart Box", ar: "بوكس تارت فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
     ]
   },
-
   "cinnamon-rolls": {
     image: "images/cinnamon rolls.jpg",
     flavors: [
@@ -104,7 +104,6 @@ const productData = {
       { en: "Premium Cinnamon Box", ar: "بوكس سينامون فاخر", priceEn: "18 AED", priceAr: "18 درهم", priceValue: 18 }
     ]
   },
-
   "mini-cheesecakes": {
     image: "images/Small cheesecake.jpg",
     flavors: [
@@ -120,7 +119,6 @@ const productData = {
       { en: "Premium Cheesecake Box", ar: "بوكس تشيزكيك فاخر", priceEn: "24 AED", priceAr: "24 درهم", priceValue: 24 }
     ]
   },
-
   "dessert-cups": {
     image: "images/cups.jpg",
     flavors: [
@@ -135,7 +133,6 @@ const productData = {
       { en: "Premium Cup Box", ar: "بوكس أكواب فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
     ]
   },
-
   "tiramisu-cubes": {
     image: "images/cube tiramisu.jpg",
     flavors: [
@@ -156,6 +153,7 @@ let selectedFlavor = null;
 let selectedGift = null;
 let quantity = 1;
 let cart = JSON.parse(localStorage.getItem("wordOfSweetsCart")) || [];
+let productsFromDB = [];
 
 function getLangText(item) {
   return currentLang === "ar" ? item.ar : item.en;
@@ -167,6 +165,139 @@ function getPriceText(item) {
 
 function getCurrencyLabel() {
   return currentLang === "ar" ? "درهم" : "AED";
+}
+
+function getDefaultConfigForProduct(product) {
+  const image = product.image_url || "images/cakes.jpg";
+  const flavorNameEn = product.name_en || "Standard";
+  const flavorNameAr = product.name_ar || "عادي";
+
+  return {
+    image,
+    flavors: [
+      {
+        en: flavorNameEn,
+        ar: flavorNameAr,
+        image,
+        priceEn: "0 AED",
+        priceAr: "0 درهم",
+        priceValue: 0
+      }
+    ],
+    gifts: [
+      {
+        en: "Standard Packaging",
+        ar: "تغليف عادي",
+        priceEn: "0 AED",
+        priceAr: "0 درهم",
+        priceValue: 0
+      }
+    ]
+  };
+}
+
+function getProductConfig(productKey) {
+  const product = productsFromDB.find((item) => item.slug === productKey);
+  return productData[productKey] || getDefaultConfigForProduct(product || {});
+}
+
+function createProductCardMarkup(product) {
+  const name = currentLang === "ar" ? (product.name_ar || product.name_en) : (product.name_en || "");
+  const description = currentLang === "ar"
+    ? (product.desc_ar || product.desc_en || "")
+    : (product.desc_en || "");
+  const note = currentLang === "ar"
+    ? "أسعار النكهات موجودة داخل عرض الخيارات"
+    : "Flavor prices shown inside View Options";
+  const viewLabel = currentLang === "ar" ? "عرض الخيارات" : "View Options";
+  const whatsappLabel = currentLang === "ar" ? "اطلب عبر واتساب" : "Order via WhatsApp";
+
+  return `
+    <article
+      class="product-card reveal"
+      data-product="${product.slug}"
+      data-name-en="${product.name_en || ""}"
+      data-name-ar="${product.name_ar || product.name_en || ""}"
+      data-desc-en="${product.desc_en || ""}"
+      data-desc-ar="${product.desc_ar || product.desc_en || ""}"
+      data-price-note-en="Flavor prices shown inside View Options"
+      data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+    >
+      <div class="product-image-wrap">
+        <img src="${product.image_url || "images/cakes.jpg"}" alt="${product.name_en || "Product"}" class="product-image" />
+      </div>
+      <div class="product-body">
+        <h3 data-en="${product.name_en || ""}" data-ar="${product.name_ar || product.name_en || ""}">${name}</h3>
+        <p
+          class="product-text"
+          data-en="${product.desc_en || ""}"
+          data-ar="${product.desc_ar || product.desc_en || ""}"
+        >
+          ${description}
+        </p>
+        <div
+          class="product-note"
+          data-en="Flavor prices shown inside View Options"
+          data-ar="أسعار النكهات موجودة داخل عرض الخيارات"
+        >
+          ${note}
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">${viewLabel}</button>
+          <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">${whatsappLabel}</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function attachProductEvents() {
+  document.querySelectorAll(".btn-view-options").forEach((button) => {
+    button.addEventListener("click", () => {
+      openModal(button.closest(".product-card"));
+    });
+  });
+
+  document.querySelectorAll(".quick-order").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest(".product-card");
+      const productName = currentLang === "ar" ? card.dataset.nameAr : card.dataset.nameEn;
+      const text = currentLang === "ar"
+        ? `مرحباً، أرغب في طلب ${productName}.`
+        : `Hello, I would like to order ${productName}.`;
+
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+    });
+  });
+}
+
+function renderProductsFromDB() {
+  if (!productsContainer) return;
+
+  productsContainer.innerHTML = productsFromDB
+    .map((product) => createProductCardMarkup(product))
+    .join("");
+
+  attachProductEvents();
+  revealOnScroll();
+}
+
+async function loadProductsFromDB() {
+  if (!db || !productsContainer) return;
+
+  const { data, error } = await db
+    .from("products")
+    .select("*")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("Error loading products:", error);
+    return;
+  }
+
+  productsFromDB = data || [];
+  renderProductsFromDB();
 }
 
 function setLanguage(lang) {
@@ -198,6 +329,10 @@ function setLanguage(lang) {
     addToCartBtn.textContent = currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
   }
 
+  if (productsFromDB.length) {
+    renderProductsFromDB();
+  }
+
   if (selectedProductCard) {
     modalTitle.textContent = currentLang === "ar"
       ? selectedProductCard.dataset.nameAr
@@ -207,7 +342,7 @@ function setLanguage(lang) {
       ? selectedProductCard.dataset.descAr
       : selectedProductCard.dataset.descEn;
 
-    const productConfig = productData[selectedProductKey];
+    const productConfig = getProductConfig(selectedProductKey);
 
     createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
       selectedFlavor = item;
@@ -247,7 +382,7 @@ window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
 
 function resetSelections(productKey) {
-  const product = productData[productKey];
+  const product = getProductConfig(productKey);
   selectedFlavor = product.flavors[0] || null;
   selectedGift = product.gifts[0] || null;
   quantity = 1;
@@ -329,19 +464,19 @@ function openModal(productCard) {
   selectedProductCard = productCard;
   selectedProductKey = productCard.dataset.product;
 
-  const productConfig = productData[selectedProductKey];
+  const productConfig = getProductConfig(selectedProductKey);
   resetSelections(selectedProductKey);
 
   modalImage.src = selectedFlavor.image;
   modalImage.alt = currentLang === "ar" ? selectedFlavor.ar : selectedFlavor.en;
 
   modalTitle.textContent = currentLang === "ar"
-    ? productCard.dataset.nameAr
-    : productCard.dataset.nameEn;
+      ? selectedProductCard.dataset.nameAr
+      : selectedProductCard.dataset.nameEn;
 
   modalDescription.textContent = currentLang === "ar"
-    ? productCard.dataset.descAr
-    : productCard.dataset.descEn;
+      ? selectedProductCard.dataset.descAr
+      : selectedProductCard.dataset.descEn;
 
   createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
     selectedFlavor = item;
@@ -371,24 +506,6 @@ function closeModal() {
   modal.setAttribute("aria-hidden", "true");
   body.style.overflow = "";
 }
-
-document.querySelectorAll(".btn-view-options").forEach((button) => {
-  button.addEventListener("click", () => {
-    openModal(button.closest(".product-card"));
-  });
-});
-
-document.querySelectorAll(".quick-order").forEach((button) => {
-  button.addEventListener("click", () => {
-    const card = button.closest(".product-card");
-    const productName = currentLang === "ar" ? card.dataset.nameAr : card.dataset.nameEn;
-    const text = currentLang === "ar"
-      ? `مرحباً، أرغب في طلب ${productName}.`
-      : `Hello, I would like to order ${productName}.`;
-
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
-  });
-});
 
 if (modalClose) modalClose.addEventListener("click", closeModal);
 if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
@@ -588,3 +705,4 @@ Estimated Total: ${totalPrice} ${getCurrencyLabel()}`;
 
 renderCart();
 setLanguage("en");
+loadProductsFromDB();
