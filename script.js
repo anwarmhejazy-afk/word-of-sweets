@@ -39,115 +39,8 @@ const cartCheckoutBtn = document.getElementById("cartCheckoutBtn");
 
 const productsContainer = document.getElementById("productsContainer");
 
-const productData = {
-  "cakes": {
-    image: "images/cakes.jpg",
-    flavors: [
-      { en: "Chocolate", ar: "شوكولاتة", image: "images/Celebration Cakes Chocolate .jpg", priceEn: "260 AED", priceAr: "260 درهم", priceValue: 260 },
-      { en: "Red Velvet", ar: "ريد فيلفت", image: "images/Celebration Cakes Red Velvet.jpg", priceEn: "280 AED", priceAr: "280 درهم", priceValue: 280 },
-      { en: "Pistachio", ar: "فستق", image: "images/Celebration Cakes Pistachio.jpg", priceEn: "295 AED", priceAr: "295 درهم", priceValue: 295 }
-    ],
-    gifts: [
-      { en: "Standard Cake Box", ar: "علبة كيك عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Wrapping", ar: "تغليف هدية", priceEn: "20 AED", priceAr: "20 درهم", priceValue: 20 },
-      { en: "Premium Presentation", ar: "تقديم فاخر", priceEn: "35 AED", priceAr: "35 درهم", priceValue: 35 }
-    ]
-  },
-  "cookies": {
-    image: "images/cookies.jpg",
-    flavors: [
-      { en: "Double Chocolate", ar: "دبل شوكولاتة", image: "images/Cookies Double Chocolate.jpg", priceEn: "55 AED", priceAr: "55 درهم", priceValue: 55 },
-      { en: "Pistachio", ar: "فستق", image: "images/Cookies Pistachio.jpg", priceEn: "60 AED", priceAr: "60 درهم", priceValue: 60 },
-      { en: "Lotus", ar: "لوتس", image: "images/Cookies Lotus.jpg", priceEn: "58 AED", priceAr: "58 درهم", priceValue: 58 }
-    ],
-    gifts: [
-      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "12 AED", priceAr: "12 درهم", priceValue: 12 },
-      { en: "Premium Cookie Box", ar: "بوكس كوكيز فاخر", priceEn: "20 AED", priceAr: "20 درهم", priceValue: 20 }
-    ]
-  },
-  "swiss-roll": {
-    image: "images/swiss roll.jpg",
-    flavors: [
-      { en: "Vanilla", ar: "فانيلا", image: "images/swiss roll vanilla.jpg", priceEn: "75 AED", priceAr: "75 درهم", priceValue: 75 },
-      { en: "Pistachio", ar: "فستق", image: "images/swiss roll pistachio.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 },
-      { en: "Raspberry", ar: "توت العليق", image: "images/swiss roll raspberry.jpg", priceEn: "82 AED", priceAr: "82 درهم", priceValue: 82 }
-    ],
-    gifts: [
-      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "15 AED", priceAr: "15 درهم", priceValue: 15 },
-      { en: "Premium Roll Box", ar: "علبة سويس رول فاخرة", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
-    ]
-  },
-  "fruit-tarts": {
-    image: "images/Small tart mix.jpg",
-    flavors: [
-      { en: "Mix", ar: "مشكل", image: "images/Small tart mix.jpg", priceEn: "76 AED", priceAr: "76 درهم", priceValue: 76 },
-      { en: "Strawberry", ar: "فراولة", image: "images/Small tart Strawberry.jpg", priceEn: "70 AED", priceAr: "70 درهم", priceValue: 70 },
-      { en: "Kiwi Berry", ar: "كيوي وتوت", image: "images/Small tart Kiwi Berry.jpg", priceEn: "74 AED", priceAr: "74 درهم", priceValue: 74 }
-    ],
-    gifts: [
-      { en: "Standard Tray", ar: "صينية عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
-      { en: "Premium Tart Box", ar: "بوكس تارت فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
-    ]
-  },
-  "cinnamon-rolls": {
-    image: "images/cinnamon rolls.jpg",
-    flavors: [
-      { en: "Classic Cinnamon", ar: "سينامون كلاسيك", image: "images/cinnamon rolls.jpg", priceEn: "65 AED", priceAr: "65 درهم", priceValue: 65 }
-    ],
-    gifts: [
-      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "12 AED", priceAr: "12 درهم", priceValue: 12 },
-      { en: "Premium Cinnamon Box", ar: "بوكس سينامون فاخر", priceEn: "18 AED", priceAr: "18 درهم", priceValue: 18 }
-    ]
-  },
-  "mini-cheesecakes": {
-    image: "images/Small cheesecake.jpg",
-    flavors: [
-      { en: "Strawberry", ar: "فراولة", image: "images/Small cheesecake Strawberry.jpg", priceEn: "85 AED", priceAr: "85 درهم", priceValue: 85 },
-      { en: "Blueberry", ar: "توت أزرق", image: "images/Small cheesecake Blueberry.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 },
-      { en: "Chocolate", ar: "شوكولاتة", image: "images/Small cheesecake chocolate.jpg", priceEn: "90 AED", priceAr: "90 درهم", priceValue: 90 },
-      { en: "Pistachio", ar: "فستق", image: "images/Small cheesecake Pistachio.jpg", priceEn: "95 AED", priceAr: "95 درهم", priceValue: 95 },
-      { en: "Lotus", ar: "لوتس", image: "images/Small cheesecake Lotus.jpg", priceEn: "92 AED", priceAr: "92 درهم", priceValue: 92 }
-    ],
-    gifts: [
-      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
-      { en: "Premium Cheesecake Box", ar: "بوكس تشيزكيك فاخر", priceEn: "24 AED", priceAr: "24 درهم", priceValue: 24 }
-    ]
-  },
-  "dessert-cups": {
-    image: "images/cups.jpg",
-    flavors: [
-      { en: "Berry Cheesecake", ar: "تشيزكيك التوت", image: "images/cups berry.jpg", priceEn: "78 AED", priceAr: "78 درهم", priceValue: 78 },
-      { en: "Tiramisu", ar: "تيراميسو", image: "images/cups tiramisu.jpg", priceEn: "82 AED", priceAr: "82 درهم", priceValue: 82 },
-      { en: "Lotus", ar: "لوتس", image: "images/cups Lotus.jpg", priceEn: "80 AED", priceAr: "80 درهم", priceValue: 80 },
-      { en: "Pistachio", ar: "فستق", image: "images/cups Pistachio.jpg", priceEn: "86 AED", priceAr: "86 درهم", priceValue: 86 }
-    ],
-    gifts: [
-      { en: "Standard Tray", ar: "صينية عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
-      { en: "Premium Cup Box", ar: "بوكس أكواب فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
-    ]
-  },
-  "tiramisu-cubes": {
-    image: "images/cube tiramisu.jpg",
-    flavors: [
-      { en: "Classic Tiramisu", ar: "تيراميسو كلاسيك", image: "images/cube tiramisu.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 }
-    ],
-    gifts: [
-      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
-      { en: "Gift Box", ar: "علبة هدية", priceEn: "16 AED", priceAr: "16 درهم", priceValue: 16 },
-      { en: "Premium Tiramisu Box", ar: "بوكس تيراميسو فاخر", priceEn: "25 AED", priceAr: "25 درهم", priceValue: 25 }
-    ]
-  }
-};
-
 let currentLang = "en";
-let selectedProductKey = "";
-let selectedProductCard = null;
+let selectedProduct = null;
 let selectedFlavor = null;
 let selectedGift = null;
 let quantity = 1;
@@ -159,95 +52,134 @@ function getRevealItems() {
 }
 
 function getLangText(item) {
-  return currentLang === "ar" ? item.ar : item.en;
+  if (!item) return "-";
+  return currentLang === "ar"
+    ? item.name_ar || item.name_en || "-"
+    : item.name_en || item.name_ar || "-";
 }
 
 function getPriceText(item) {
-  return currentLang === "ar" ? item.priceAr : item.priceEn;
+  const value = Number(item?.price_value || 0);
+  return currentLang === "ar" ? `${value} درهم` : `${value} AED`;
 }
 
 function getCurrencyLabel() {
   return currentLang === "ar" ? "درهم" : "AED";
 }
 
-function getDefaultConfigForProduct(product) {
-  const image = product.image_url || "images/cakes.jpg";
-  const flavorNameEn = product.name_en || "Standard";
-  const flavorNameAr = product.name_ar || "عادي";
-
-  return {
-    image,
-    flavors: [
-      {
-        en: flavorNameEn,
-        ar: flavorNameAr,
-        image,
-        priceEn: "0 AED",
-        priceAr: "0 درهم",
-        priceValue: 0
-      }
-    ],
-    gifts: [
-      {
-        en: "Standard Packaging",
-        ar: "تغليف عادي",
-        priceEn: "0 AED",
-        priceAr: "0 درهم",
-        priceValue: 0
-      }
-    ]
-  };
+function getProductName(product) {
+  if (!product) return "-";
+  return currentLang === "ar"
+    ? product.name_ar || product.name_en || "-"
+    : product.name_en || product.name_ar || "-";
 }
 
-function getProductConfig(productKey) {
-  const product = productsFromDB.find((item) => item.slug === productKey);
-  return productData[productKey] || getDefaultConfigForProduct(product || {});
+function getProductDescription(product) {
+  if (!product) return "";
+  return currentLang === "ar"
+    ? product.desc_ar || product.desc_en || ""
+    : product.desc_en || product.desc_ar || "";
 }
+
+function getSafeImage(url, fallback = "images/cakes.jpg") {
+  return url && String(url).trim() ? url : fallback;
+}
+
+function sortByOrder(items) {
+  return [...(items || [])].sort(
+    (a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0)
+  );
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+
+  langButtons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+
+  body.classList.toggle("lang-ar", lang === "ar");
+  document.documentElement.lang = lang;
+  document.documentElement.dir = "ltr";
+
+  translatableElements.forEach((el) => {
+    const value = lang === "ar" ? el.dataset.ar : el.dataset.en;
+    if (value) el.textContent = value;
+  });
+
+  if (cartEmpty) {
+    cartEmpty.textContent = currentLang === "ar" ? cartEmpty.dataset.ar : cartEmpty.dataset.en;
+  }
+
+  if (cartCheckoutBtn) {
+    cartCheckoutBtn.textContent = currentLang === "ar" ? cartCheckoutBtn.dataset.ar : cartCheckoutBtn.dataset.en;
+  }
+
+  if (addToCartBtn) {
+    addToCartBtn.textContent = currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
+  }
+
+  if (productsFromDB.length) {
+    renderProductsFromDB();
+  }
+
+  if (selectedProduct) {
+    renderModalContent();
+  }
+
+  updateSummary();
+  renderCart();
+}
+
+langButtons.forEach((btn) => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+function revealOnScroll() {
+  const triggerBottom = window.innerHeight * 0.9;
+
+  getRevealItems().forEach((item) => {
+    if (item.getBoundingClientRect().top < triggerBottom) {
+      item.classList.add("show");
+    }
+  });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("load", revealOnScroll);
 
 function createProductCardMarkup(product) {
-  const name = currentLang === "ar" ? (product.name_ar || product.name_en) : (product.name_en || "");
-  const description = currentLang === "ar"
-    ? (product.desc_ar || product.desc_en || "")
-    : (product.desc_en || "");
   const note = currentLang === "ar"
     ? "أسعار النكهات موجودة داخل عرض الخيارات"
     : "Flavor prices shown inside View Options";
+
   const viewLabel = currentLang === "ar" ? "عرض الخيارات" : "View Options";
   const whatsappLabel = currentLang === "ar" ? "اطلب عبر واتساب" : "Order via WhatsApp";
 
   return `
-    <article
-      class="product-card reveal show"
-      data-product="${product.slug}"
-      data-name-en="${product.name_en || ""}"
-      data-name-ar="${product.name_ar || product.name_en || ""}"
-      data-desc-en="${product.desc_en || ""}"
-      data-desc-ar="${product.desc_ar || product.desc_en || ""}"
-      data-price-note-en="Flavor prices shown inside View Options"
-      data-price-note-ar="أسعار النكهات موجودة داخل عرض الخيارات"
-    >
+    <article class="product-card reveal show" data-product-id="${product.id}">
       <div class="product-image-wrap">
-        <img src="${product.image_url || "images/cakes.jpg"}" alt="${product.name_en || "Product"}" class="product-image" />
+        <img
+          src="${getSafeImage(product.image_url)}"
+          alt="${product.name_en || "Product"}"
+          class="product-image"
+        />
       </div>
+
       <div class="product-body">
-        <h3 data-en="${product.name_en || ""}" data-ar="${product.name_ar || product.name_en || ""}">${name}</h3>
-        <p
-          class="product-text"
-          data-en="${product.desc_en || ""}"
-          data-ar="${product.desc_ar || product.desc_en || ""}"
-        >
-          ${description}
+        <h3>${getProductName(product)}</h3>
+
+        <p class="product-text">
+          ${getProductDescription(product)}
         </p>
-        <div
-          class="product-note"
-          data-en="Flavor prices shown inside View Options"
-          data-ar="أسعار النكهات موجودة داخل عرض الخيارات"
-        >
+
+        <div class="product-note">
           ${note}
         </div>
+
         <div class="card-actions">
-          <button class="btn btn-card btn-view-options" type="button" data-en="View Options" data-ar="عرض الخيارات">${viewLabel}</button>
-          <button class="btn btn-card btn-card-whatsapp quick-order" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">${whatsappLabel}</button>
+          <button class="btn btn-card btn-view-options" type="button">${viewLabel}</button>
+          <button class="btn btn-card btn-card-whatsapp quick-order" type="button">${whatsappLabel}</button>
         </div>
       </div>
     </article>
@@ -257,14 +189,21 @@ function createProductCardMarkup(product) {
 function attachProductEvents() {
   document.querySelectorAll(".btn-view-options").forEach((button) => {
     button.addEventListener("click", () => {
-      openModal(button.closest(".product-card"));
+      const card = button.closest(".product-card");
+      const productId = Number(card?.dataset.productId);
+      const product = productsFromDB.find((item) => item.id === productId);
+      if (product) openModal(product);
     });
   });
 
   document.querySelectorAll(".quick-order").forEach((button) => {
     button.addEventListener("click", () => {
       const card = button.closest(".product-card");
-      const productName = currentLang === "ar" ? card.dataset.nameAr : card.dataset.nameEn;
+      const productId = Number(card?.dataset.productId);
+      const product = productsFromDB.find((item) => item.id === productId);
+      if (!product) return;
+
+      const productName = getProductName(product);
       const text = currentLang === "ar"
         ? `مرحباً، أرغب في طلب ${productName}.`
         : `Hello, I would like to order ${productName}.`;
@@ -290,7 +229,28 @@ async function loadProductsFromDB() {
 
   const { data, error } = await db
     .from("products")
-    .select("*")
+    .select(`
+      *,
+      product_flavors (
+        id,
+        product_id,
+        name_en,
+        name_ar,
+        image_url,
+        price_value,
+        sort_order,
+        created_at
+      ),
+      product_gifts (
+        id,
+        product_id,
+        name_en,
+        name_ar,
+        price_value,
+        sort_order,
+        created_at
+      )
+    `)
     .eq("is_active", true)
     .order("sort_order", { ascending: true });
 
@@ -299,103 +259,41 @@ async function loadProductsFromDB() {
     return;
   }
 
-  productsFromDB = data || [];
+  productsFromDB = (data || []).map((product) => ({
+    ...product,
+    product_flavors: sortByOrder(product.product_flavors),
+    product_gifts: sortByOrder(product.product_gifts)
+  }));
+
   console.log("Homepage products:", productsFromDB);
   renderProductsFromDB();
 }
 
-function setLanguage(lang) {
-  currentLang = lang;
-
-  langButtons.forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.lang === lang);
-  });
-
-  body.classList.toggle("lang-ar", lang === "ar");
-
-  document.documentElement.lang = lang;
-  document.documentElement.dir = "ltr";
-
-  translatableElements.forEach((el) => {
-    const value = lang === "ar" ? el.dataset.ar : el.dataset.en;
-    if (value) el.textContent = value;
-  });
-
-  if (cartEmpty) {
-    cartEmpty.textContent = currentLang === "ar" ? cartEmpty.dataset.ar : cartEmpty.dataset.en;
-  }
-
-  if (cartCheckoutBtn) {
-    cartCheckoutBtn.textContent = currentLang === "ar" ? cartCheckoutBtn.dataset.ar : cartCheckoutBtn.dataset.en;
-  }
-
-  if (addToCartBtn) {
-    addToCartBtn.textContent = currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
-  }
-
-  if (productsFromDB.length) {
-    renderProductsFromDB();
-  }
-
-  if (selectedProductCard) {
-    modalTitle.textContent = currentLang === "ar"
-      ? selectedProductCard.dataset.nameAr
-      : selectedProductCard.dataset.nameEn;
-
-    modalDescription.textContent = currentLang === "ar"
-      ? selectedProductCard.dataset.descAr
-      : selectedProductCard.dataset.descEn;
-
-    const productConfig = getProductConfig(selectedProductKey);
-
-    createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
-      selectedFlavor = item;
-      modalImage.src = item.image;
-      modalImage.alt = currentLang === "ar" ? item.ar : item.en;
-      [...flavorOptions.children].forEach((child) => child.classList.remove("active"));
-      button.classList.add("active");
-      updateSummary();
-    });
-
-    createGiftButtons(giftOptions, productConfig.gifts, (item, button) => {
-      selectedGift = item;
-      [...giftOptions.children].forEach((child) => child.classList.remove("active"));
-      button.classList.add("active");
-      updateSummary();
-    });
-  }
-
-  updateSummary();
-  renderCart();
-}
-
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
-});
-
-function revealOnScroll() {
-  const triggerBottom = window.innerHeight * 0.9;
-
-  getRevealItems().forEach((item) => {
-    if (item.getBoundingClientRect().top < triggerBottom) {
-      item.classList.add("show");
-    }
-  });
-}
-
-window.addEventListener("scroll", revealOnScroll);
-window.addEventListener("load", revealOnScroll);
-
-function resetSelections(productKey) {
-  const product = getProductConfig(productKey);
-  selectedFlavor = product.flavors[0] || null;
-  selectedGift = product.gifts[0] || null;
+function resetSelections(product) {
+  selectedProduct = product;
+  selectedFlavor = product?.product_flavors?.[0] || null;
+  selectedGift = product?.product_gifts?.[0] || null;
   quantity = 1;
 }
 
 function createGiftButtons(container, items, clickHandler) {
   if (!container) return;
   container.innerHTML = "";
+
+  if (!items || !items.length) {
+    const empty = document.createElement("div");
+    empty.className = "gift-btn active";
+    empty.innerHTML = `
+      <span class="option-name">${currentLang === "ar" ? "بدون إضافة" : "No extra"}</span>
+      <span class="option-price">0 ${getCurrencyLabel()}</span>
+    `;
+    empty.addEventListener("click", () => {
+      selectedGift = { name_en: "No extra", name_ar: "بدون إضافة", price_value: 0 };
+      updateSummary();
+    });
+    container.appendChild(empty);
+    return;
+  }
 
   items.forEach((item, index) => {
     const button = document.createElement("button");
@@ -415,12 +313,35 @@ function createFlavorButtons(container, items, clickHandler) {
   if (!container) return;
   container.innerHTML = "";
 
+  if (!items || !items.length) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "flavor-btn active";
+    button.innerHTML = `
+      <img src="${getSafeImage(selectedProduct?.image_url)}" alt="Standard">
+      <span class="flavor-name">${currentLang === "ar" ? "الخيار الأساسي" : "Standard option"}</span>
+      <span class="flavor-price">0 ${getCurrencyLabel()}</span>
+    `;
+    button.addEventListener("click", () => {
+      selectedFlavor = {
+        name_en: "Standard option",
+        name_ar: "الخيار الأساسي",
+        image_url: selectedProduct?.image_url || "",
+        price_value: 0
+      };
+      modalImage.src = getSafeImage(selectedFlavor.image_url, getSafeImage(selectedProduct?.image_url));
+      updateSummary();
+    });
+    container.appendChild(button);
+    return;
+  }
+
   items.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "flavor-btn" + (index === 0 ? " active" : "");
     button.innerHTML = `
-      <img src="${item.image}" alt="${item.en}">
+      <img src="${getSafeImage(item.image_url, getSafeImage(selectedProduct?.image_url))}" alt="${item.name_en || "Flavor"}">
       <span class="flavor-name">${getLangText(item)}</span>
       <span class="flavor-price">${getPriceText(item)}</span>
     `;
@@ -431,21 +352,18 @@ function createFlavorButtons(container, items, clickHandler) {
 }
 
 function updateSummary() {
-  if (!selectedProductCard) return;
+  if (!selectedProduct) return;
 
-  const name = currentLang === "ar"
-    ? selectedProductCard.dataset.nameAr
-    : selectedProductCard.dataset.nameEn;
-
-  const flavorPrice = selectedFlavor ? selectedFlavor.priceValue : 0;
-  const giftPrice = selectedGift ? selectedGift.priceValue : 0;
+  const productName = getProductName(selectedProduct);
+  const flavorPrice = Number(selectedFlavor?.price_value || 0);
+  const giftPrice = Number(selectedGift?.price_value || 0);
   const totalPrice = (flavorPrice + giftPrice) * quantity;
 
-  summaryProduct.textContent = name;
+  summaryProduct.textContent = productName;
   summaryFlavor.textContent = selectedFlavor ? getLangText(selectedFlavor) : "-";
-  summaryPrice.textContent = selectedFlavor ? getPriceText(selectedFlavor) : "-";
-  summaryGift.textContent = selectedGift ? getLangText(selectedGift) : "-";
-  summaryGiftPrice.textContent = selectedGift ? getPriceText(selectedGift) : "-";
+  summaryPrice.textContent = selectedFlavor ? getPriceText(selectedFlavor) : `0 ${getCurrencyLabel()}`;
+  summaryGift.textContent = selectedGift ? getLangText(selectedGift) : (currentLang === "ar" ? "بدون إضافة" : "No extra");
+  summaryGiftPrice.textContent = selectedGift ? getPriceText(selectedGift) : `0 ${getCurrencyLabel()}`;
   summaryQty.textContent = quantity;
   quantityValue.textContent = quantity;
   summaryTotal.textContent = `${totalPrice} ${getCurrencyLabel()}`;
@@ -465,34 +383,27 @@ function updateSummary() {
   }
 }
 
-function openModal(productCard) {
-  selectedProductCard = productCard;
-  selectedProductKey = productCard.dataset.product;
+function renderModalContent() {
+  if (!selectedProduct) return;
 
-  const productConfig = getProductConfig(selectedProductKey);
-  resetSelections(selectedProductKey);
+  modalTitle.textContent = getProductName(selectedProduct);
+  modalDescription.textContent = getProductDescription(selectedProduct);
 
-  modalImage.src = selectedFlavor.image;
-  modalImage.alt = currentLang === "ar" ? selectedFlavor.ar : selectedFlavor.en;
+  const flavorImage = selectedFlavor?.image_url || selectedProduct.image_url;
+  modalImage.src = getSafeImage(flavorImage, getSafeImage(selectedProduct.image_url));
+  modalImage.alt = getProductName(selectedProduct);
 
-  modalTitle.textContent = currentLang === "ar"
-    ? selectedProductCard.dataset.nameAr
-    : selectedProductCard.dataset.nameEn;
-
-  modalDescription.textContent = currentLang === "ar"
-    ? selectedProductCard.dataset.descAr
-    : selectedProductCard.dataset.descEn;
-
-  createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
+  createFlavorButtons(flavorOptions, selectedProduct.product_flavors, (item, button) => {
     selectedFlavor = item;
-    modalImage.src = item.image;
-    modalImage.alt = currentLang === "ar" ? item.ar : item.en;
+    modalImage.src = getSafeImage(item.image_url, getSafeImage(selectedProduct.image_url));
+    modalImage.alt = getLangText(item);
+
     [...flavorOptions.children].forEach((child) => child.classList.remove("active"));
     button.classList.add("active");
     updateSummary();
   });
 
-  createGiftButtons(giftOptions, productConfig.gifts, (item, button) => {
+  createGiftButtons(giftOptions, selectedProduct.product_gifts, (item, button) => {
     selectedGift = item;
     [...giftOptions.children].forEach((child) => child.classList.remove("active"));
     button.classList.add("active");
@@ -500,6 +411,11 @@ function openModal(productCard) {
   });
 
   updateSummary();
+}
+
+function openModal(product) {
+  resetSelections(product);
+  renderModalContent();
 
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
@@ -622,17 +538,18 @@ if (cartOverlay) cartOverlay.addEventListener("click", closeCart);
 
 if (addToCartBtn) {
   addToCartBtn.addEventListener("click", () => {
-    if (!selectedProductCard || !selectedFlavor || !selectedGift) return;
+    if (!selectedProduct) return;
 
-    const totalValue = ((selectedFlavor.priceValue || 0) + (selectedGift.priceValue || 0)) * quantity;
+    const totalValue =
+      (Number(selectedFlavor?.price_value || 0) + Number(selectedGift?.price_value || 0)) * quantity;
 
     cart.push({
-      productEn: selectedProductCard.dataset.nameEn,
-      productAr: selectedProductCard.dataset.nameAr,
-      flavorEn: selectedFlavor.en,
-      flavorAr: selectedFlavor.ar,
-      giftEn: selectedGift.en,
-      giftAr: selectedGift.ar,
+      productEn: selectedProduct.name_en || "",
+      productAr: selectedProduct.name_ar || selectedProduct.name_en || "",
+      flavorEn: selectedFlavor?.name_en || "Standard option",
+      flavorAr: selectedFlavor?.name_ar || "الخيار الأساسي",
+      giftEn: selectedGift?.name_en || "No extra",
+      giftAr: selectedGift?.name_ar || "بدون إضافة",
       quantity,
       totalValue
     });
@@ -677,14 +594,15 @@ Price: ${item.totalValue} AED`;
 
 if (sendOrderBtn) {
   sendOrderBtn.addEventListener("click", () => {
-    if (!selectedProductCard) return;
+    if (!selectedProduct) return;
 
-    const productName = currentLang === "ar" ? selectedProductCard.dataset.nameAr : selectedProductCard.dataset.nameEn;
+    const productName = getProductName(selectedProduct);
     const flavorName = selectedFlavor ? getLangText(selectedFlavor) : "-";
-    const flavorPrice = selectedFlavor ? getPriceText(selectedFlavor) : "-";
-    const giftName = selectedGift ? getLangText(selectedGift) : "-";
-    const giftPrice = selectedGift ? getPriceText(selectedGift) : "-";
-    const totalPrice = ((selectedFlavor ? selectedFlavor.priceValue : 0) + (selectedGift ? selectedGift.priceValue : 0)) * quantity;
+    const flavorPrice = selectedFlavor ? getPriceText(selectedFlavor) : `0 ${getCurrencyLabel()}`;
+    const giftName = selectedGift ? getLangText(selectedGift) : (currentLang === "ar" ? "بدون إضافة" : "No extra");
+    const giftPrice = selectedGift ? getPriceText(selectedGift) : `0 ${getCurrencyLabel()}`;
+    const totalPrice =
+      (Number(selectedFlavor?.price_value || 0) + Number(selectedGift?.price_value || 0)) * quantity;
 
     const message = currentLang === "ar"
       ? `مرحباً، أرغب في طلب:
