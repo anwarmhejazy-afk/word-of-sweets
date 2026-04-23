@@ -1439,3 +1439,177 @@ img {
     font-size: 0.88rem !important;
   }
 }
+
+/* ===== HARD OVERRIDE: HERO FINAL FIX ===== */
+
+.hero,
+.hero .container,
+.hero-inner {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.hero-inner {
+  margin: 0 auto !important;
+  padding: 20px 16px 28px !important;
+  text-align: center !important;
+}
+
+.hero-logo-wrap {
+  margin: 0 0 14px !important;
+  justify-content: center !important;
+}
+
+.hero-logo {
+  display: block !important;
+  width: 130px !important;
+  max-width: 130px !important;
+  margin: 0 auto !important;
+}
+
+.hero-tag {
+  max-width: 520px !important;
+  margin: 0 auto 14px !important;
+  font-size: 0.76rem !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.22em !important;
+  text-align: center !important;
+}
+
+.hero-title {
+  display: block !important;
+  width: min(920px, 92vw) !important;
+  max-width: min(920px, 92vw) !important;
+  margin: 0 auto 18px !important;
+  font-size: clamp(2.2rem, 5.6vw, 4.3rem) !important;
+  line-height: 0.94 !important;
+  letter-spacing: -0.035em !important;
+  text-align: center !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.hero-subtitle {
+  display: block !important;
+  width: min(760px, 92vw) !important;
+  max-width: min(760px, 92vw) !important;
+  margin: 0 auto 22px !important;
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+  text-align: center !important;
+  color: #8a7f75 !important;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+.hero-buttons {
+  justify-content: center !important;
+  margin: 0 0 14px !important;
+}
+
+.hero-buttons .btn-whatsapp {
+  min-height: 46px !important;
+  padding: 0 22px !important;
+  font-size: 0.95rem !important;
+}
+
+.hero-divider {
+  justify-content: center !important;
+}
+
+@media (max-width: 900px) {
+  .hero-inner {
+    padding: 14px 14px 24px !important;
+  }
+
+  .hero-logo {
+    width: 100px !important;
+    max-width: 100px !important;
+  }
+
+  .hero-tag {
+    max-width: 340px !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  .hero-title {
+    width: min(560px, 92vw) !important;
+    max-width: min(560px, 92vw) !important;
+    font-size: clamp(1.7rem, 7.2vw, 3rem) !important;
+    line-height: 0.97 !important;
+    margin-bottom: 12px !important;
+  }
+
+  .hero-subtitle {
+    width: min(520px, 92vw) !important;
+    max-width: min(520px, 92vw) !important;
+    font-size: 0.9rem !important;
+    margin-bottom: 18px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding-top: 8px !important;
+    position: relative !important;
+  }
+
+  .topbar-wrap {
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+  }
+
+  .topbar-actions {
+    gap: 6px !important;
+    transform: scale(0.9) !important;
+    transform-origin: top right !important;
+  }
+
+  .hero-inner {
+    padding: 8px 10px 20px !important;
+  }
+
+  .hero-logo-wrap {
+    margin-bottom: 8px !important;
+  }
+
+  .hero-logo {
+    width: 72px !important;
+    max-width: 72px !important;
+  }
+
+  .hero-tag {
+    width: 280px !important;
+    max-width: 280px !important;
+    font-size: 0.54rem !important;
+    letter-spacing: 0.12em !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-title {
+    width: min(300px, 92vw) !important;
+    max-width: min(300px, 92vw) !important;
+    font-size: clamp(1.45rem, 8.5vw, 2.1rem) !important;
+    line-height: 0.98 !important;
+    margin-bottom: 10px !important;
+    letter-spacing: -0.025em !important;
+  }
+
+  .hero-subtitle {
+    width: min(290px, 92vw) !important;
+    max-width: min(290px, 92vw) !important;
+    font-size: 0.8rem !important;
+    line-height: 1.62 !important;
+    margin-bottom: 14px !important;
+    padding: 0 !important;
+  }
+
+  .hero-buttons .btn-whatsapp {
+    min-height: 42px !important;
+    padding: 0 18px !important;
+    font-size: 0.86rem !important;
+  }
+}
