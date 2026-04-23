@@ -1168,3 +1168,32 @@ body.lang-ar .summary-row strong {
     padding: 8px 8px;
   }
 }
+
+.order-note-input {
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid #ded7cf;
+  border-radius: 16px;
+  padding: 14px 16px;
+  font: inherit;
+  resize: vertical;
+  background: #fff;
+  color: #241c18;
+  box-sizing: border-box;
+}
+
+.modal {
+  overscroll-behavior: contain;
+}
+
+.modal-dialog {
+  overscroll-behavior: contain;
+}
+
+.modal-content-side {
+  overscroll-behavior: contain;
+}
+
+body.modal-open {
+  overflow: hidden;
+}

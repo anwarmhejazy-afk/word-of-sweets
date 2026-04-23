@@ -18,6 +18,7 @@ const decreaseQty = document.getElementById("decreaseQty");
 const increaseQty = document.getElementById("increaseQty");
 const sendOrderBtn = document.getElementById("sendOrderBtn");
 const addToCartBtn = document.getElementById("addToCartBtn");
+const orderNote = document.getElementById("orderNote");
 
 const summaryProduct = document.getElementById("summaryProduct");
 const summaryFlavor = document.getElementById("summaryFlavor");
@@ -91,6 +92,14 @@ function sortByOrder(items) {
   );
 }
 
+function updateNotePlaceholder() {
+  if (!orderNote) return;
+  orderNote.placeholder =
+    currentLang === "ar"
+      ? orderNote.dataset.arPlaceholder
+      : orderNote.dataset.enPlaceholder;
+}
+
 function setLanguage(lang) {
   currentLang = lang;
 
@@ -118,6 +127,8 @@ function setLanguage(lang) {
   if (addToCartBtn) {
     addToCartBtn.textContent = currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
   }
+
+  updateNotePlaceholder();
 
   if (productsFromDB.length) {
     renderProductsFromDB();
@@ -265,7 +276,6 @@ async function loadProductsFromDB() {
     product_gifts: sortByOrder(product.product_gifts)
   }));
 
-  console.log("Homepage products:", productsFromDB);
   renderProductsFromDB();
 }
 
@@ -274,28 +284,22 @@ function resetSelections(product) {
   selectedFlavor = product?.product_flavors?.[0] || null;
   selectedGift = product?.product_gifts?.[0] || null;
   quantity = 1;
+  if (orderNote) orderNote.value = "";
 }
 
 function createGiftButtons(container, items, clickHandler) {
   if (!container) return;
   container.innerHTML = "";
 
-  if (!items || !items.length) {
-    const empty = document.createElement("div");
-    empty.className = "gift-btn active";
-    empty.innerHTML = `
-      <span class="option-name">${currentLang === "ar" ? "بدون إضافة" : "No extra"}</span>
-      <span class="option-price">0 ${getCurrencyLabel()}</span>
-    `;
-    empty.addEventListener("click", () => {
-      selectedGift = { name_en: "No extra", name_ar: "بدون إضافة", price_value: 0 };
-      updateSummary();
-    });
-    container.appendChild(empty);
-    return;
-  }
+  const noExtraItem = {
+    name_en: "No extra",
+    name_ar: "بدون إضافة",
+    price_value: 0
+  };
 
-  items.forEach((item, index) => {
+  const allItems = [noExtraItem, ...(items || [])];
+
+  allItems.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "gift-btn" + (index === 0 ? " active" : "");
@@ -304,7 +308,13 @@ function createGiftButtons(container, items, clickHandler) {
       <span class="option-price">${getPriceText(item)}</span>
     `;
 
-    button.addEventListener("click", () => clickHandler(item, button));
+    button.addEventListener("click", () => {
+      clickHandler(item, button);
+
+      [...container.children].forEach((child) => child.classList.remove("active"));
+      button.classList.add("active");
+    });
+
     container.appendChild(button);
   });
 }
@@ -403,14 +413,34 @@ function renderModalContent() {
     updateSummary();
   });
 
-  createGiftButtons(giftOptions, selectedProduct.product_gifts, (item, button) => {
+  createGiftButtons(giftOptions, selectedProduct.product_gifts, (item) => {
     selectedGift = item;
-    [...giftOptions.children].forEach((child) => child.classList.remove("active"));
-    button.classList.add("active");
     updateSummary();
   });
 
   updateSummary();
+}
+
+function stopScrollPropagation(element) {
+  if (!element) return;
+
+  element.addEventListener(
+    "wheel",
+    (event) => {
+      const { scrollTop, scrollHeight, clientHeight } = element;
+      const isScrollingUp = event.deltaY < 0;
+      const isScrollingDown = event.deltaY > 0;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      if ((isScrollingUp && atTop) || (isScrollingDown && atBottom)) {
+        event.preventDefault();
+      }
+
+      event.stopPropagation();
+    },
+    { passive: false }
+  );
 }
 
 function openModal(product) {
@@ -419,13 +449,13 @@ function openModal(product) {
 
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
-  body.style.overflow = "hidden";
+  body.classList.add("modal-open");
 }
 
 function closeModal() {
   modal.classList.remove("active");
   modal.setAttribute("aria-hidden", "true");
-  body.style.overflow = "";
+  body.classList.remove("modal-open");
 }
 
 if (modalClose) modalClose.addEventListener("click", closeModal);
@@ -436,6 +466,12 @@ document.addEventListener("keydown", (event) => {
     closeModal();
   }
 });
+
+if (modal) stopScrollPropagation(modal);
+const modalDialog = document.querySelector(".modal-dialog");
+if (modalDialog) stopScrollPropagation(modalDialog);
+const modalContentSide = document.querySelector(".modal-content-side");
+if (modalContentSide) stopScrollPropagation(modalContentSide);
 
 if (decreaseQty) {
   decreaseQty.addEventListener("click", () => {
@@ -449,6 +485,12 @@ if (decreaseQty) {
 if (increaseQty) {
   increaseQty.addEventListener("click", () => {
     quantity += 1;
+    updateSummary();
+  });
+}
+
+if (orderNote) {
+  orderNote.addEventListener("input", () => {
     updateSummary();
   });
 }
@@ -485,12 +527,14 @@ function renderCart() {
     const flavorName = currentLang === "ar" ? item.flavorAr : item.flavorEn;
     const giftName = currentLang === "ar" ? item.giftAr : item.giftEn;
     const totalText = currentLang === "ar" ? `${item.totalValue} درهم` : `${item.totalValue} AED`;
+    const noteText = currentLang === "ar" ? item.noteAr || "" : item.noteEn || "";
 
     itemEl.innerHTML = `
       <h4>${productName}</h4>
       <div class="cart-meta">${currentLang === "ar" ? "النكهة" : "Flavor"}: ${flavorName}</div>
       <div class="cart-meta">${currentLang === "ar" ? "الهدية" : "Gift"}: ${giftName}</div>
       <div class="cart-meta">${currentLang === "ar" ? "الكمية" : "Qty"}: ${item.quantity}</div>
+      ${noteText ? `<div class="cart-meta">${currentLang === "ar" ? "ملاحظات" : "Notes"}: ${noteText}</div>` : ""}
       <div class="cart-item-row">
         <div class="cart-item-price">${totalText}</div>
         <button class="cart-remove" type="button" data-index="${index}">
@@ -550,6 +594,8 @@ if (addToCartBtn) {
       flavorAr: selectedFlavor?.name_ar || "الخيار الأساسي",
       giftEn: selectedGift?.name_en || "No extra",
       giftAr: selectedGift?.name_ar || "بدون إضافة",
+      noteEn: orderNote?.value?.trim() || "",
+      noteAr: orderNote?.value?.trim() || "",
       quantity,
       totalValue
     });
@@ -568,25 +614,46 @@ if (cartCheckoutBtn) {
     let total = 0;
     const lines = cart.map((item, index) => {
       total += item.totalValue;
+      const noteBlock = item.noteEn || item.noteAr
+        ? currentLang === "ar"
+          ? `ملاحظات: ${item.noteAr || item.noteEn}`
+          : `Notes: ${item.noteEn || item.noteAr}`
+        : "";
 
       if (currentLang === "ar") {
         return `${index + 1}) ${item.productAr}
 النكهة: ${item.flavorAr}
 الهدية: ${item.giftAr}
 الكمية: ${item.quantity}
-السعر: ${item.totalValue} درهم`;
+${noteBlock ? noteBlock + "\n" : ""}السعر: ${item.totalValue} درهم`;
       }
 
       return `${index + 1}) ${item.productEn}
 Flavor: ${item.flavorEn}
 Gift: ${item.giftEn}
 Qty: ${item.quantity}
-Price: ${item.totalValue} AED`;
+${noteBlock ? noteBlock + "\n" : ""}Price: ${item.totalValue} AED`;
     });
 
     const message = currentLang === "ar"
-      ? `مرحباً، أرغب في طلب العناصر التالية:\n\n${lines.join("\n\n")}\n\nالإجمالي: ${total} درهم`
-      : `Hello, I would like to order the following items:\n\n${lines.join("\n\n")}\n\nTotal: ${total} AED`;
+      ? `مرحباً 👋
+
+أرغب في طلب العناصر التالية:
+
+${lines.join("\n\n")}
+
+الإجمالي: ${total} درهم
+
+شكراً`
+      : `Hello 👋
+
+I would like to place the following order:
+
+${lines.join("\n\n")}
+
+Total: ${total} AED
+
+Thank you`;
 
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   });
@@ -601,26 +668,37 @@ if (sendOrderBtn) {
     const flavorPrice = selectedFlavor ? getPriceText(selectedFlavor) : `0 ${getCurrencyLabel()}`;
     const giftName = selectedGift ? getLangText(selectedGift) : (currentLang === "ar" ? "بدون إضافة" : "No extra");
     const giftPrice = selectedGift ? getPriceText(selectedGift) : `0 ${getCurrencyLabel()}`;
+    const noteValue = orderNote?.value?.trim() || "";
     const totalPrice =
       (Number(selectedFlavor?.price_value || 0) + Number(selectedGift?.price_value || 0)) * quantity;
 
     const message = currentLang === "ar"
-      ? `مرحباً، أرغب في طلب:
+      ? `مرحباً 👋
+
+أرغب في طلب:
+
 الصنف: ${productName}
 النكهة: ${flavorName}
 سعر النكهة: ${flavorPrice}
 خيار الهدية: ${giftName}
 سعر الهدية: ${giftPrice}
 الكمية: ${quantity}
-الإجمالي التقريبي: ${totalPrice} ${getCurrencyLabel()}`
-      : `Hello, I would like to place an order:
+${noteValue ? `ملاحظات: ${noteValue}\n` : ""}الإجمالي التقريبي: ${totalPrice} ${getCurrencyLabel()}
+
+شكراً`
+      : `Hello 👋
+
+I would like to place an order:
+
 Item: ${productName}
 Flavor: ${flavorName}
 Flavor Price: ${flavorPrice}
 Gift Option: ${giftName}
 Gift Price: ${giftPrice}
 Quantity: ${quantity}
-Estimated Total: ${totalPrice} ${getCurrencyLabel()}`;
+${noteValue ? `Notes: ${noteValue}\n` : ""}Estimated Total: ${totalPrice} ${getCurrencyLabel()}
+
+Thank you`;
 
     window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
   });
