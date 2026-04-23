@@ -4,7 +4,6 @@ const whatsappNumber = "971528112120";
 const body = document.body;
 const langButtons = document.querySelectorAll(".lang-btn");
 const translatableElements = document.querySelectorAll("[data-en][data-ar]");
-const revealItems = document.querySelectorAll(".reveal");
 
 const modal = document.getElementById("productModal");
 const modalClose = document.getElementById("modalClose");
@@ -155,6 +154,10 @@ let quantity = 1;
 let cart = JSON.parse(localStorage.getItem("wordOfSweetsCart")) || [];
 let productsFromDB = [];
 
+function getRevealItems() {
+  return document.querySelectorAll(".reveal");
+}
+
 function getLangText(item) {
   return currentLang === "ar" ? item.ar : item.en;
 }
@@ -214,7 +217,7 @@ function createProductCardMarkup(product) {
 
   return `
     <article
-      class="product-card reveal"
+      class="product-card reveal show"
       data-product="${product.slug}"
       data-name-en="${product.name_en || ""}"
       data-name-ar="${product.name_ar || product.name_en || ""}"
@@ -297,6 +300,7 @@ async function loadProductsFromDB() {
   }
 
   productsFromDB = data || [];
+  console.log("Homepage products:", productsFromDB);
   renderProductsFromDB();
 }
 
@@ -371,7 +375,8 @@ langButtons.forEach((btn) => {
 
 function revealOnScroll() {
   const triggerBottom = window.innerHeight * 0.9;
-  revealItems.forEach((item) => {
+
+  getRevealItems().forEach((item) => {
     if (item.getBoundingClientRect().top < triggerBottom) {
       item.classList.add("show");
     }
@@ -471,12 +476,12 @@ function openModal(productCard) {
   modalImage.alt = currentLang === "ar" ? selectedFlavor.ar : selectedFlavor.en;
 
   modalTitle.textContent = currentLang === "ar"
-      ? selectedProductCard.dataset.nameAr
-      : selectedProductCard.dataset.nameEn;
+    ? selectedProductCard.dataset.nameAr
+    : selectedProductCard.dataset.nameEn;
 
   modalDescription.textContent = currentLang === "ar"
-      ? selectedProductCard.dataset.descAr
-      : selectedProductCard.dataset.descEn;
+    ? selectedProductCard.dataset.descAr
+    : selectedProductCard.dataset.descEn;
 
   createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
     selectedFlavor = item;
