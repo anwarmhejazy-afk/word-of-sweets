@@ -1,9 +1,6 @@
 const SUPABASE_URL = "https://roubmrtlctofykokqddv.supabase.co";
-const SUPABASE_KEY = "YOUR_ANON_KEY_HERE"; // from Supabase
+const SUPABASE_KEY = "sb_publishable_fOaDO0rPk6PzzHudxi-WZQ_QlxhXrwE";
 
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+window.db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// IMPORTANT: expose globally
-window.db = db;
-
-console.log("Supabase connected:", db);
+console.log("Supabase connected:", window.db);
