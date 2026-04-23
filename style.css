@@ -24,6 +24,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: "Inter", Arial, sans-serif;
@@ -55,6 +61,7 @@ a {
 .container {
   width: min(var(--container), calc(100% - 32px));
   margin: 0 auto;
+  max-width: 100%;
 }
 
 .section {
@@ -155,6 +162,12 @@ a {
   max-width: 900px;
 }
 
+.hero-inner {
+  text-align: center;
+  max-width: 900px;
+  overflow: hidden;
+}
+
 .hero-logo-wrap {
   display: flex;
   justify-content: center;
@@ -162,7 +175,8 @@ a {
 }
 
 .hero-logo {
-  width: 180px;
+  width: 220px;
+  max-width: 70vw;
   opacity: 0.9;
 }
 
@@ -179,10 +193,12 @@ a {
   margin: 0 auto 18px;
   max-width: 760px;
   font-family: "Playfair Display", serif;
-  font-size: clamp(2.5rem, 6vw, 4.8rem);
-  line-height: 0.95;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  line-height: 0.98;
   font-weight: 800;
   letter-spacing: -0.03em;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .hero-subtitle {
@@ -865,16 +881,39 @@ body.modal-open {
     padding: 42px 0;
   }
 
+  .hero {
+    padding-top: 18px;
+    padding-bottom: 34px;
+  }
+
   .hero-logo {
-    width: 132px;
+    width: 120px;
+    max-width: 42vw;
+  }
+
+  .hero-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    line-height: 1.4;
+    margin-bottom: 12px;
   }
 
   .hero-title {
-    font-size: clamp(2.2rem, 10vw, 3.6rem);
+    font-size: clamp(1.7rem, 8.6vw, 2.7rem);
+    line-height: 0.98;
+    max-width: 100%;
+    margin-bottom: 14px;
   }
 
   .hero-subtitle {
-    font-size: 0.94rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 100%;
+    padding: 0 4px;
+  }
+
+  .hero-buttons {
+    margin-bottom: 14px;
   }
 
   .section-head h2 {
@@ -986,4 +1025,14 @@ body.modal-open {
     padding: 9px 14px;
     font-size: 0.85rem;
   }
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-tag,
+.topbar,
+.topbar-wrap,
+.topbar-actions,
+.language-switch {
+  max-width: 100%;
 }
