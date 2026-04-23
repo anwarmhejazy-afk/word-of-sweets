@@ -82,6 +82,18 @@ function getProductDescription(product) {
     : product.desc_en || product.desc_ar || "";
 }
 
+function getShortDescription(product) {
+  const fullText = getProductDescription(product).trim();
+
+  if (!fullText) return "";
+
+  const maxLength = currentLang === "ar" ? 55 : 58;
+
+  if (fullText.length <= maxLength) return fullText;
+
+  return fullText.slice(0, maxLength).trim() + "...";
+}
+
 function getSafeImage(url, fallback = "images/cakes.jpg") {
   return url && String(url).trim() ? url : fallback;
 }
@@ -160,10 +172,6 @@ window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
 
 function createProductCardMarkup(product) {
-  const note = currentLang === "ar"
-    ? "أسعار النكهات موجودة داخل عرض الخيارات"
-    : "Flavor prices shown inside View Options";
-
   const viewLabel = currentLang === "ar" ? "عرض الخيارات" : "View Options";
   const whatsappLabel = currentLang === "ar" ? "اطلب عبر واتساب" : "Order via WhatsApp";
 
@@ -181,12 +189,8 @@ function createProductCardMarkup(product) {
         <h3>${getProductName(product)}</h3>
 
         <p class="product-text">
-          ${getProductDescription(product)}
+          ${getShortDescription(product)}
         </p>
-
-        <div class="product-note">
-          ${note}
-        </div>
 
         <div class="card-actions">
           <button class="btn btn-card btn-view-options" type="button">${viewLabel}</button>
@@ -282,7 +286,7 @@ async function loadProductsFromDB() {
 function resetSelections(product) {
   selectedProduct = product;
   selectedFlavor = product?.product_flavors?.[0] || null;
-  selectedGift = product?.product_gifts?.[0] || null;
+  selectedGift = { name_en: "No extra", name_ar: "بدون إضافة", price_value: 0 };
   quantity = 1;
   if (orderNote) orderNote.value = "";
 }
@@ -340,6 +344,9 @@ function createFlavorButtons(container, items, clickHandler) {
         price_value: 0
       };
       modalImage.src = getSafeImage(selectedFlavor.image_url, getSafeImage(selectedProduct?.image_url));
+
+      [...container.children].forEach((child) => child.classList.remove("active"));
+      button.classList.add("active");
       updateSummary();
     });
     container.appendChild(button);
@@ -421,28 +428,6 @@ function renderModalContent() {
   updateSummary();
 }
 
-function stopScrollPropagation(element) {
-  if (!element) return;
-
-  element.addEventListener(
-    "wheel",
-    (event) => {
-      const { scrollTop, scrollHeight, clientHeight } = element;
-      const isScrollingUp = event.deltaY < 0;
-      const isScrollingDown = event.deltaY > 0;
-      const atTop = scrollTop <= 0;
-      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-      if ((isScrollingUp && atTop) || (isScrollingDown && atBottom)) {
-        event.preventDefault();
-      }
-
-      event.stopPropagation();
-    },
-    { passive: false }
-  );
-}
-
 function openModal(product) {
   resetSelections(product);
   renderModalContent();
@@ -466,12 +451,6 @@ document.addEventListener("keydown", (event) => {
     closeModal();
   }
 });
-
-if (modal) stopScrollPropagation(modal);
-const modalDialog = document.querySelector(".modal-dialog");
-if (modalDialog) stopScrollPropagation(modalDialog);
-const modalContentSide = document.querySelector(".modal-content-side");
-if (modalContentSide) stopScrollPropagation(modalContentSide);
 
 if (decreaseQty) {
   decreaseQty.addEventListener("click", () => {
