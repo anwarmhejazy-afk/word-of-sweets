@@ -29,8 +29,8 @@
         </button>
 
         <div class="language-switch">
-          <button class="lang-btn" data-lang="ar">عربي</button>
-          <button class="lang-btn active" data-lang="en">English</button>
+          <button class="lang-btn" data-lang="ar" type="button">عربي</button>
+          <button class="lang-btn active" data-lang="en" type="button">English</button>
         </div>
       </div>
     </div>
@@ -39,45 +39,35 @@
   <main>
     <section class="hero section" id="home">
       <div class="container hero-inner">
-        <div class="hero-logo-wrap reveal">
+        <div class="hero-logo-wrap reveal show">
           <img src="images/Logo.png" alt="Word of Sweets main logo" class="hero-logo" />
         </div>
 
         <p
-          class="hero-tag reveal"
+          class="hero-tag reveal show"
           data-en="Dubai Luxury Dessert Atelier"
           data-ar="أتيليه حلويات فاخر في دبي"
         >
           Dubai Luxury Dessert Atelier
         </p>
 
-<h1
-  class="hero-title reveal"
-  data-en="Luxury Homemade Desserts for Elegant Moments"
-  data-ar="حلويات منزلية فاخرة للحظات الأنيقة"
->
-  Luxury Homemade Desserts for Elegant Moments
-</h1>
-
-<p
-  class="hero-subtitle reveal"
-  data-en="Boutique desserts, beautifully presented and available to order on WhatsApp."
-  data-ar="حلويات بوتيكية بتقديم أنيق ومتاحة للطلب مباشرة عبر واتساب."
->
-  Boutique desserts, beautifully presented and available to order on WhatsApp.
-</p>
-  class="hero-subtitle reveal"
-  data-en="Boutique cakes, cookies, cheesecakes, dessert cups, and more — beautifully presented and available to order on WhatsApp."
-  data-ar="كيكات وكوكيز وتشيزكيك وأكواب حلى والمزيد — بتقديم بوتيكي أنيق وطلب مباشر عبر واتساب."
->
-  Boutique cakes, cookies, cheesecakes, dessert cups, and more — beautifully presented and available to order on WhatsApp.
-</p>ies, Swiss rolls, fruit tarts, cinnamon rolls, cheesecakes, dessert cups, and more with boutique presentation and direct WhatsApp ordering."
-          data-ar="كيكات وكوكيز وسويس رول وتارت فواكه وسينامون رول وتشيزكيك وأكواب حلى والمزيد بتقديم بوتيك فاخر وطلب مباشر عبر واتساب."
+        <h1
+          class="hero-title reveal show"
+          data-en="Luxury Homemade Desserts for Elegant Moments"
+          data-ar="حلويات منزلية فاخرة للحظات الأنيقة"
         >
-          Premium cakes, cookies, Swiss rolls, fruit tarts, cinnamon rolls, cheesecakes, dessert cups, and more with boutique presentation and direct WhatsApp ordering.
+          Luxury Homemade Desserts for Elegant Moments
+        </h1>
+
+        <p
+          class="hero-subtitle reveal show"
+          data-en="Boutique desserts, beautifully presented and available to order on WhatsApp."
+          data-ar="حلويات بوتيكية بتقديم أنيق ومتاحة للطلب مباشرة عبر واتساب."
+        >
+          Boutique desserts, beautifully presented and available to order on WhatsApp.
         </p>
 
-        <div class="hero-buttons reveal">
+        <div class="hero-buttons reveal show">
           <a
             href="https://wa.me/971528112120"
             target="_blank"
@@ -90,7 +80,7 @@
           </a>
         </div>
 
-        <div class="hero-divider reveal">
+        <div class="hero-divider reveal show">
           <span></span>
           <i></i>
           <span></span>
@@ -100,13 +90,13 @@
 
     <section class="products section" id="products">
       <div class="container">
-        <div class="section-head reveal">
+        <div class="section-head reveal show">
           <h2 data-en="Signature Collection" data-ar="التشكيلة المميزة">
             Signature Collection
           </h2>
           <p
             data-en="A refined menu of boutique desserts designed for gifting, sweet tables, events, and premium celebrations."
-            data-ar="قائمة راقية من الحلويات البوتيكية المصممة للهدايا وطاولات الحلوى والمناسبات والاحتفالات الفاخرة."
+            data-ar="تشكيلة راقية من الحلويات البوتيكية مصممة للهدايا والطاولات الفاخرة والمناسبات."
           >
             A refined menu of boutique desserts designed for gifting, sweet tables, events, and premium celebrations.
           </p>
@@ -118,7 +108,7 @@
 
     <section class="cta section">
       <div class="container">
-        <div class="cta-box reveal">
+        <div class="cta-box reveal show">
           <h2 data-en="Place Your Luxury Dessert Order" data-ar="اطلب تشكيلتك الفاخرة">
             Place Your Luxury Dessert Order
           </h2>
@@ -145,7 +135,10 @@
 
   <footer class="site-footer">
     <div class="container footer-wrap">
-      <p data-en="Premium homemade desserts crafted with care in Dubai" data-ar="حلويات منزلية فاخرة مصنوعة بعناية في دبي">
+      <p
+        data-en="Premium homemade desserts crafted with care in Dubai"
+        data-ar="حلويات منزلية فاخرة مصنوعة بعناية في دبي"
+      >
         Premium homemade desserts crafted with care in Dubai
       </p>
     </div>
@@ -167,40 +160,61 @@
           <p id="modalDescription" class="modal-description"></p>
 
           <div class="option-group">
-            <h3 class="option-title" data-en="Choose Flavor" data-ar="اختر النكهة">Choose Flavor</h3>
+            <h3 class="option-title" data-en="Choose Flavor" data-ar="اختر النكهة">
+              Choose Flavor
+            </h3>
             <div class="flavor-grid" id="flavorOptions"></div>
           </div>
 
           <div class="option-group">
-            <h3 class="option-title" data-en="Gift Options" data-ar="خيارات التغليف والهدايا">Gift Options</h3>
+            <h3 class="option-title" data-en="Gift Options" data-ar="خيارات التغليف">
+              Gift Options
+            </h3>
             <div class="option-grid" id="giftOptions"></div>
           </div>
 
           <div class="option-group">
-  <h3 class="option-title" data-en="Quantity" data-ar="الكمية">Quantity</h3>
-  <div class="quantity-row">
-    <button class="qty-btn" id="decreaseQty" type="button">-</button>
-    <span class="qty-number" id="quantityValue">1</span>
-    <button class="qty-btn" id="increaseQty" type="button">+</button>
-  </div>
-</div>
+            <h3 class="option-title" data-en="Quantity" data-ar="الكمية">
+              Quantity
+            </h3>
+            <div class="quantity-row">
+              <button class="qty-btn" id="decreaseQty" type="button">-</button>
+              <span class="qty-number" id="quantityValue">1</span>
+              <button class="qty-btn" id="increaseQty" type="button">+</button>
+            </div>
+          </div>
 
-<div class="option-group">
-  <h3 class="option-title" data-en="Notes" data-ar="ملاحظات">Notes</h3>
-  <textarea
-    id="orderNote"
-    class="order-note-input"
-    data-en-placeholder="Add any notes for your order..."
-    data-ar-placeholder="أضف أي ملاحظات لطلبك..."
-    placeholder="Add any notes for your order..."
-  ></textarea>
-</div>
+          <div class="option-group">
+            <h3 class="option-title" data-en="Notes" data-ar="ملاحظات">
+              Notes
+            </h3>
+            <textarea
+              id="orderNote"
+              class="order-note-input"
+              data-en-placeholder="Add any notes for your order..."
+              data-ar-placeholder="أضف أي ملاحظات لطلبك..."
+              placeholder="Add any notes for your order..."
+            ></textarea>
+          </div>
 
           <div class="modal-actions">
-            <button class="btn btn-add-cart" id="addToCartBtn" type="button" data-en="Add to Cart" data-ar="أضف إلى السلة">
+            <button
+              class="btn btn-add-cart"
+              id="addToCartBtn"
+              type="button"
+              data-en="Add to Cart"
+              data-ar="أضف إلى السلة"
+            >
               Add to Cart
             </button>
-            <button class="btn btn-whatsapp modal-order-btn" id="sendOrderBtn" type="button" data-en="Order via WhatsApp" data-ar="اطلب عبر واتساب">
+
+            <button
+              class="btn modal-order-btn"
+              id="sendOrderBtn"
+              type="button"
+              data-en="Order via WhatsApp"
+              data-ar="اطلب عبر واتساب"
+            >
               Order via WhatsApp
             </button>
           </div>
@@ -208,7 +222,7 @@
           <div class="modal-summary">
             <div class="summary-row">
               <span data-en="Selected Item" data-ar="الصنف المختار">Selected Item</span>
-              <strong id="summaryProduct"></strong>
+              <strong id="summaryProduct">-</strong>
             </div>
             <div class="summary-row">
               <span data-en="Flavor" data-ar="النكهة">Flavor</span>
@@ -219,11 +233,11 @@
               <strong id="summaryPrice">-</strong>
             </div>
             <div class="summary-row">
-              <span data-en="Gift Option" data-ar="خيار الهدية">Gift Option</span>
+              <span data-en="Gift Option" data-ar="خيار التغليف">Gift Option</span>
               <strong id="summaryGift">-</strong>
             </div>
             <div class="summary-row">
-              <span data-en="Gift Price" data-ar="سعر الهدية">Gift Price</span>
+              <span data-en="Gift Price" data-ar="سعر التغليف">Gift Price</span>
               <strong id="summaryGiftPrice">-</strong>
             </div>
             <div class="summary-row">
@@ -240,17 +254,24 @@
     </div>
   </div>
 
+  <div class="cart-overlay" id="cartOverlay"></div>
+
   <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
     <div class="cart-header">
-      <h2 data-en="Your Cart" data-ar="سلة المشتريات">Your Cart</h2>
-      <button class="cart-close" id="cartClose" type="button" aria-label="Close cart">×</button>
+      <h2 data-en="Your Cart" data-ar="سلتك">Your Cart</h2>
+      <button class="cart-close" id="cartClose" type="button" aria-label="Close">×</button>
     </div>
 
     <div class="cart-items" id="cartItems"></div>
 
-    <div class="cart-empty" id="cartEmpty" data-en="Your cart is empty." data-ar="سلة المشتريات فارغة.">
+    <p
+      class="cart-empty"
+      id="cartEmpty"
+      data-en="Your cart is empty."
+      data-ar="السلة فارغة."
+    >
       Your cart is empty.
-    </div>
+    </p>
 
     <div class="cart-footer">
       <div class="cart-total-row">
@@ -258,13 +279,17 @@
         <strong id="cartTotal">0 AED</strong>
       </div>
 
-      <button class="btn btn-whatsapp cart-checkout-btn" id="cartCheckoutBtn" type="button" data-en="Checkout on WhatsApp" data-ar="إرسال الطلب عبر واتساب">
-        Checkout on WhatsApp
+      <button
+        class="btn cart-checkout-btn"
+        id="cartCheckoutBtn"
+        type="button"
+        data-en="Send Order on WhatsApp"
+        data-ar="أرسل الطلب عبر واتساب"
+      >
+        Send Order on WhatsApp
       </button>
     </div>
   </aside>
-
-  <div class="cart-overlay" id="cartOverlay"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
