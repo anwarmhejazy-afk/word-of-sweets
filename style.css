@@ -1654,3 +1654,31 @@ img {
     margin-bottom: 10px !important;
   }
 }
+
+/* ===== FINAL LOGO FIX (ONLY ONE BLOCK) ===== */
+
+.hero-logo-wrap {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.hero-logo {
+  width: 220px;
+  height: auto;
+  transform: scale(1.6);
+  transform-origin: center;
+}
+
+@media (max-width: 640px) {
+  .hero-logo-wrap {
+    height: 95px;
+  }
+
+  .hero-logo {
+    width: 160px;
+    transform: scale(1.5);
+  }
+}
