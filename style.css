@@ -1682,3 +1682,402 @@ img {
     transform: scale(1.5);
   }
 }
+
+/* ===== ULTRA PREMIUM UI POLISH ===== */
+
+body {
+  background:
+    radial-gradient(circle at top center, rgba(255, 255, 255, 0.95), transparent 360px),
+    linear-gradient(180deg, #f8f4ed 0%, #f2eadf 100%) !important;
+}
+
+/* Hero luxury spacing */
+.hero {
+  padding-top: 12px !important;
+  padding-bottom: 72px !important;
+}
+
+.hero-title {
+  text-shadow: 0 8px 26px rgba(44, 36, 31, 0.08);
+}
+
+.hero-subtitle {
+  color: #7f756d !important;
+}
+
+.hero-logo-wrap {
+  filter: drop-shadow(0 10px 20px rgba(169, 133, 86, 0.14));
+}
+
+/* Premium buttons */
+.btn-whatsapp,
+.btn-card-whatsapp,
+.modal-order-btn,
+.btn-add-cart,
+.cart-checkout-btn {
+  background: linear-gradient(135deg, #b8945f 0%, #8f946f 100%) !important;
+  box-shadow:
+    0 10px 24px rgba(142, 111, 68, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+}
+
+.btn-view-options {
+  background: rgba(255, 255, 255, 0.88) !important;
+}
+
+.btn:hover {
+  transform: translateY(-2px) !important;
+}
+
+/* Products */
+.products {
+  padding-top: 30px !important;
+}
+
+.section-head h2 {
+  text-shadow: 0 8px 22px rgba(44, 36, 31, 0.08);
+}
+
+.product-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(231, 221, 208, 0.85) !important;
+  box-shadow:
+    0 18px 42px rgba(44, 36, 31, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 55px rgba(44, 36, 31, 0.13),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+}
+
+.product-image-wrap {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+
+.product-image {
+  transition: transform 0.35s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.04);
+}
+
+/* Premium CTA */
+.cta-box {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 229, 188, 0.16), transparent 34%),
+    linear-gradient(135deg, #21140e 0%, #4a2e1b 48%, #6a4a2a 100%) !important;
+  box-shadow:
+    0 24px 70px rgba(44, 26, 16, 0.23),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09) !important;
+}
+
+/* Modal premium */
+.modal-dialog {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 360px),
+    #f7f1e9 !important;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+}
+
+.flavor-btn,
+.gift-btn {
+  box-shadow: 0 12px 28px rgba(44, 36, 31, 0.06);
+}
+
+.flavor-btn.active,
+.gift-btn.active {
+  background: linear-gradient(180deg, #fff, #fbf6ef) !important;
+  border-color: #b8945f !important;
+  box-shadow:
+    0 14px 32px rgba(169, 133, 86, 0.18),
+    inset 0 0 0 1px rgba(184, 148, 95, 0.18) !important;
+}
+
+/* Mobile luxury polish */
+@media (max-width: 640px) {
+  .hero {
+    padding-bottom: 46px !important;
+  }
+
+  .hero-title {
+    text-shadow: 0 6px 18px rgba(44, 36, 31, 0.08);
+  }
+
+  .section-head {
+    margin-bottom: 22px !important;
+  }
+
+  .product-card {
+    box-shadow:
+      0 14px 32px rgba(44, 36, 31, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .cta-box {
+    margin-top: 18px;
+  }
+}
+
+/* ==================================================
+   FINAL ULTRA PREMIUM MODAL + PRODUCT PAGE FIX
+   Safe override only - does not damage mobile
+================================================== */
+
+/* Modal background */
+.modal {
+  background: rgba(32, 24, 18, 0.38) !important;
+  backdrop-filter: blur(10px) saturate(120%) !important;
+}
+
+/* Modal main box */
+.modal-dialog {
+  width: min(1180px, calc(100% - 28px)) !important;
+  max-height: 90vh !important;
+  overflow: hidden !important;
+  border-radius: 30px !important;
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 360px),
+    linear-gradient(135deg, #fffaf4 0%, #f5eee5 100%) !important;
+  box-shadow:
+    0 35px 90px rgba(30, 18, 10, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+}
+
+/* Layout: image bigger, content still clean */
+.modal-grid {
+  display: grid !important;
+  grid-template-columns: 58% 42% !important;
+  gap: 26px !important;
+  max-height: 90vh !important;
+  align-items: stretch !important;
+}
+
+/* Left image area */
+.modal-image-side {
+  padding: 24px 0 24px 24px !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+/* Main product image */
+.modal-image {
+  width: 100% !important;
+  height: 520px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 26px !important;
+  box-shadow:
+    0 24px 60px rgba(44, 36, 31, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55) !important;
+  transition: transform 0.45s ease, box-shadow 0.45s ease !important;
+}
+
+/* Premium hover zoom */
+.modal-image:hover {
+  transform: scale(1.025) !important;
+  box-shadow:
+    0 32px 78px rgba(44, 36, 31, 0.24),
+    0 0 35px rgba(184, 148, 95, 0.16) !important;
+}
+
+/* Right content side */
+.modal-content-side {
+  padding: 28px 28px 28px 0 !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Modal close button */
+.modal-close {
+  top: 18px !important;
+  right: 18px !important;
+  width: 48px !important;
+  height: 48px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 12px 28px rgba(44, 36, 31, 0.12) !important;
+}
+
+/* Modal title */
+.modal-title {
+  font-family: "Inter", Arial, sans-serif !important;
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem) !important;
+  line-height: 0.96 !important;
+  letter-spacing: -0.04em !important;
+  margin-bottom: 14px !important;
+}
+
+/* Modal description */
+.modal-description {
+  max-width: 560px !important;
+  color: #7f746c !important;
+  font-size: 1.02rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Option cards */
+.flavor-btn,
+.gift-btn {
+  background: rgba(255, 255, 255, 0.86) !important;
+  border: 1px solid rgba(231, 221, 208, 0.8) !important;
+  border-radius: 22px !important;
+  box-shadow:
+    0 16px 38px rgba(44, 36, 31, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease !important;
+}
+
+/* Hover effect */
+.flavor-btn:hover,
+.gift-btn:hover {
+  transform: translateY(-4px) !important;
+  box-shadow:
+    0 22px 48px rgba(44, 36, 31, 0.13),
+    0 0 28px rgba(184, 148, 95, 0.12) !important;
+}
+
+/* Active selected option */
+.flavor-btn.active,
+.gift-btn.active {
+  background: linear-gradient(180deg, #fff, #fbf5ed) !important;
+  border-color: #b8945f !important;
+  box-shadow:
+    0 22px 50px rgba(169, 133, 86, 0.22),
+    inset 0 0 0 1px rgba(184, 148, 95, 0.22) !important;
+}
+
+/* Flavor thumbnails */
+.flavor-btn img {
+  width: 82px !important;
+  height: 82px !important;
+  object-fit: cover !important;
+  border-radius: 18px !important;
+  box-shadow: 0 10px 20px rgba(44, 36, 31, 0.08) !important;
+}
+
+/* Buttons inside modal */
+.btn-add-cart,
+.modal-order-btn {
+  min-height: 54px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #b8945f 0%, #8f946f 100%) !important;
+  box-shadow:
+    0 14px 34px rgba(142, 111, 68, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+
+/* Notes input */
+.order-note-input {
+  background: rgba(255, 255, 255, 0.86) !important;
+  border: 1px solid rgba(222, 215, 207, 0.95) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Summary box */
+.modal-summary {
+  background: rgba(255, 255, 255, 0.78) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 18px 42px rgba(44, 36, 31, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Mobile and tablet safe layout */
+@media (max-width: 900px) {
+  .modal {
+    padding: 10px !important;
+    align-items: flex-start !important;
+  }
+
+  .modal-dialog {
+    width: 100% !important;
+    max-height: 94vh !important;
+    border-radius: 24px !important;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    max-height: 94vh !important;
+  }
+
+  .modal-image-side {
+    padding: 18px 18px 0 18px !important;
+  }
+
+  .modal-image {
+    height: 300px !important;
+    border-radius: 22px !important;
+  }
+
+  .modal-content-side {
+    padding: 0 18px 20px 18px !important;
+    max-height: 56vh !important;
+  }
+
+  .modal-title {
+    font-size: 2.1rem !important;
+  }
+
+  .modal-description {
+    font-size: 0.94rem !important;
+  }
+}
+
+/* Mobile phone exact fix */
+@media (max-width: 640px) {
+  .modal-dialog {
+    border-radius: 22px !important;
+  }
+
+  .modal-image {
+    height: 240px !important;
+    border-radius: 18px !important;
+  }
+
+  .modal-content-side {
+    max-height: 58vh !important;
+    padding: 0 14px 18px 14px !important;
+  }
+
+  .modal-title {
+    font-size: 1.8rem !important;
+    line-height: 1 !important;
+  }
+
+  .flavor-grid,
+  .option-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .flavor-btn,
+  .gift-btn {
+    border-radius: 18px !important;
+    min-height: 90px !important;
+  }
+
+  .flavor-btn img {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+  }
+
+  .btn-add-cart,
+  .modal-order-btn {
+    min-height: 48px !important;
+  }
+}
