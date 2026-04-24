@@ -42,11 +42,35 @@ const productsContainer = document.getElementById("productsContainer");
 
 let currentLang = "en";
 let selectedProduct = null;
-let selectedFlavor = null;
-let selectedGift = null;
+let selectedFlavors = [];
+let selectedGifts = [];
 let quantity = 1;
 let cart = JSON.parse(localStorage.getItem("wordOfSweetsCart")) || [];
 let productsFromDB = [];
+
+const baseGiftOptions = [
+  {
+    id: "gift-packaging",
+    name_en: "Gift Packaging",
+    name_ar: "تغليف هدية",
+    price_value: 10,
+    sort_order: 1
+  },
+  {
+    id: "greeting-card",
+    name_en: "Greeting Card",
+    name_ar: "بطاقة تهنئة",
+    price_value: 5,
+    sort_order: 2
+  },
+  {
+    id: "mixed-selection",
+    name_en: "Mixed Selection",
+    name_ar: "تشكيلة مشكلة",
+    price_value: 15,
+    sort_order: 3
+  }
+];
 
 function getRevealItems() {
   return document.querySelectorAll(".reveal");
@@ -59,13 +83,23 @@ function getLangText(item) {
     : item.name_en || item.name_ar || "-";
 }
 
+function getCurrencyLabel() {
+  return currentLang === "ar" ? "درهم" : "AED";
+}
+
 function getPriceText(item) {
   const value = Number(item?.price_value || 0);
   return currentLang === "ar" ? `${value} درهم` : `${value} AED`;
 }
 
-function getCurrencyLabel() {
-  return currentLang === "ar" ? "درهم" : "AED";
+function getGiftLabel(item) {
+  const value = Number(item?.price_value || 0);
+
+  if (currentLang === "ar") {
+    return `${getLangText(item)} (+${value} درهم)`;
+  }
+
+  return `${getLangText(item)} (+${value} AED)`;
 }
 
 function getProductName(product) {
@@ -84,7 +118,6 @@ function getProductDescription(product) {
 
 function getShortDescription(product) {
   const fullText = getProductDescription(product).trim();
-
   if (!fullText) return "";
 
   const maxLength = currentLang === "ar" ? 55 : 58;
@@ -104,8 +137,43 @@ function sortByOrder(items) {
   );
 }
 
+function getGiftOptionsForProduct(product) {
+  const flavorsCount = product?.product_flavors?.length || 0;
+
+  if (flavorsCount <= 1) {
+    return baseGiftOptions.filter((gift) => gift.id !== "mixed-selection");
+  }
+
+  return baseGiftOptions;
+}
+
+function getTotalFlavorPrice() {
+  return selectedFlavors.reduce((sum, item) => sum + Number(item.price_value || 0), 0);
+}
+
+function getTotalGiftPrice() {
+  return selectedGifts.reduce((sum, item) => sum + Number(item.price_value || 0), 0);
+}
+
+function getNamesList(items) {
+  if (!items || !items.length) {
+    return currentLang === "ar" ? "بدون" : "None";
+  }
+
+  return items.map((item) => getLangText(item)).join(", ");
+}
+
+function getPricesList(items) {
+  if (!items || !items.length) {
+    return `0 ${getCurrencyLabel()}`;
+  }
+
+  return items.map((item) => `${getLangText(item)}: ${getPriceText(item)}`).join(" | ");
+}
+
 function updateNotePlaceholder() {
   if (!orderNote) return;
+
   orderNote.placeholder =
     currentLang === "ar"
       ? orderNote.dataset.arPlaceholder
@@ -129,15 +197,18 @@ function setLanguage(lang) {
   });
 
   if (cartEmpty) {
-    cartEmpty.textContent = currentLang === "ar" ? cartEmpty.dataset.ar : cartEmpty.dataset.en;
+    cartEmpty.textContent =
+      currentLang === "ar" ? cartEmpty.dataset.ar : cartEmpty.dataset.en;
   }
 
   if (cartCheckoutBtn) {
-    cartCheckoutBtn.textContent = currentLang === "ar" ? cartCheckoutBtn.dataset.ar : cartCheckoutBtn.dataset.en;
+    cartCheckoutBtn.textContent =
+      currentLang === "ar" ? cartCheckoutBtn.dataset.ar : cartCheckoutBtn.dataset.en;
   }
 
   if (addToCartBtn) {
-    addToCartBtn.textContent = currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
+    addToCartBtn.textContent =
+      currentLang === "ar" ? addToCartBtn.dataset.ar : addToCartBtn.dataset.en;
   }
 
   updateNotePlaceholder();
@@ -219,11 +290,15 @@ function attachProductEvents() {
       if (!product) return;
 
       const productName = getProductName(product);
-      const text = currentLang === "ar"
-        ? `مرحباً، أرغب في طلب ${productName}.`
-        : `Hello, I would like to order ${productName}.`;
+      const text =
+        currentLang === "ar"
+          ? `مرحباً، أرغب في طلب ${productName}.`
+          : `Hello, I would like to order ${productName}.`;
 
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
+        "_blank"
+      );
     });
   });
 }
@@ -255,15 +330,6 @@ async function loadProductsFromDB() {
         price_value,
         sort_order,
         created_at
-      ),
-      product_gifts (
-        id,
-        product_id,
-        name_en,
-        name_ar,
-        price_value,
-        sort_order,
-        created_at
       )
     `)
     .eq("is_active", true)
@@ -276,8 +342,7 @@ async function loadProductsFromDB() {
 
   productsFromDB = (data || []).map((product) => ({
     ...product,
-    product_flavors: sortByOrder(product.product_flavors),
-    product_gifts: sortByOrder(product.product_gifts)
+    product_flavors: sortByOrder(product.product_flavors)
   }));
 
   renderProductsFromDB();
@@ -285,85 +350,104 @@ async function loadProductsFromDB() {
 
 function resetSelections(product) {
   selectedProduct = product;
-  selectedFlavor = product?.product_flavors?.[0] || null;
-  selectedGift = { name_en: "No extra", name_ar: "بدون إضافة", price_value: 0 };
+  selectedFlavors = product?.product_flavors?.length ? [product.product_flavors[0]] : [];
+  selectedGifts = [];
   quantity = 1;
+
   if (orderNote) orderNote.value = "";
 }
 
-function createGiftButtons(container, items, clickHandler) {
-  if (!container) return;
-  container.innerHTML = "";
+function toggleFlavor(item, button) {
+  const exists = selectedFlavors.some((flavor) => flavor.id === item.id);
 
-  const noExtraItem = {
-    name_en: "No extra",
-    name_ar: "بدون إضافة",
-    price_value: 0
-  };
+  if (exists) {
+    if (selectedFlavors.length === 1) return;
+    selectedFlavors = selectedFlavors.filter((flavor) => flavor.id !== item.id);
+    button.classList.remove("active");
+  } else {
+    selectedFlavors.push(item);
+    button.classList.add("active");
+    modalImage.src = getSafeImage(item.image_url, getSafeImage(selectedProduct.image_url));
+    modalImage.alt = getLangText(item);
+  }
 
-  const allItems = [noExtraItem, ...(items || [])];
-
-  allItems.forEach((item, index) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "gift-btn" + (index === 0 ? " active" : "");
-    button.innerHTML = `
-      <span class="option-name">${getLangText(item)}</span>
-      <span class="option-price">${getPriceText(item)}</span>
-    `;
-
-    button.addEventListener("click", () => {
-      clickHandler(item, button);
-
-      [...container.children].forEach((child) => child.classList.remove("active"));
-      button.classList.add("active");
-    });
-
-    container.appendChild(button);
-  });
+  updateSummary();
 }
 
-function createFlavorButtons(container, items, clickHandler) {
+function toggleGift(item, button) {
+  const exists = selectedGifts.some((gift) => gift.id === item.id);
+
+  if (exists) {
+    selectedGifts = selectedGifts.filter((gift) => gift.id !== item.id);
+    button.classList.remove("active");
+  } else {
+    selectedGifts.push(item);
+    button.classList.add("active");
+  }
+
+  updateSummary();
+}
+
+function createFlavorButtons(container, items) {
   if (!container) return;
   container.innerHTML = "";
 
   if (!items || !items.length) {
+    const standardOption = {
+      id: "standard-option",
+      name_en: "Standard option",
+      name_ar: "الخيار الأساسي",
+      image_url: selectedProduct?.image_url || "",
+      price_value: 0
+    };
+
+    selectedFlavors = [standardOption];
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "flavor-btn active";
     button.innerHTML = `
       <img src="${getSafeImage(selectedProduct?.image_url)}" alt="Standard">
-      <span class="flavor-name">${currentLang === "ar" ? "الخيار الأساسي" : "Standard option"}</span>
-      <span class="flavor-price">0 ${getCurrencyLabel()}</span>
+      <span class="flavor-name">${getLangText(standardOption)}</span>
+      <span class="flavor-price">${getPriceText(standardOption)}</span>
     `;
-    button.addEventListener("click", () => {
-      selectedFlavor = {
-        name_en: "Standard option",
-        name_ar: "الخيار الأساسي",
-        image_url: selectedProduct?.image_url || "",
-        price_value: 0
-      };
-      modalImage.src = getSafeImage(selectedFlavor.image_url, getSafeImage(selectedProduct?.image_url));
 
-      [...container.children].forEach((child) => child.classList.remove("active"));
-      button.classList.add("active");
-      updateSummary();
-    });
     container.appendChild(button);
     return;
   }
 
-  items.forEach((item, index) => {
+  items.forEach((item) => {
+    const isActive = selectedFlavors.some((flavor) => flavor.id === item.id);
+
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "flavor-btn" + (index === 0 ? " active" : "");
+    button.className = "flavor-btn" + (isActive ? " active" : "");
     button.innerHTML = `
       <img src="${getSafeImage(item.image_url, getSafeImage(selectedProduct?.image_url))}" alt="${item.name_en || "Flavor"}">
       <span class="flavor-name">${getLangText(item)}</span>
       <span class="flavor-price">${getPriceText(item)}</span>
     `;
 
-    button.addEventListener("click", () => clickHandler(item, button));
+    button.addEventListener("click", () => toggleFlavor(item, button));
+    container.appendChild(button);
+  });
+}
+
+function createGiftButtons(container, items) {
+  if (!container) return;
+  container.innerHTML = "";
+
+  items.forEach((item) => {
+    const isActive = selectedGifts.some((gift) => gift.id === item.id);
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "gift-btn" + (isActive ? " active" : "");
+    button.innerHTML = `
+      <span class="option-name">${getGiftLabel(item)}</span>
+    `;
+
+    button.addEventListener("click", () => toggleGift(item, button));
     container.appendChild(button);
   });
 }
@@ -371,16 +455,15 @@ function createFlavorButtons(container, items, clickHandler) {
 function updateSummary() {
   if (!selectedProduct) return;
 
-  const productName = getProductName(selectedProduct);
-  const flavorPrice = Number(selectedFlavor?.price_value || 0);
-  const giftPrice = Number(selectedGift?.price_value || 0);
-  const totalPrice = (flavorPrice + giftPrice) * quantity;
+  const flavorTotal = getTotalFlavorPrice();
+  const giftTotal = getTotalGiftPrice();
+  const totalPrice = (flavorTotal + giftTotal) * quantity;
 
-  summaryProduct.textContent = productName;
-  summaryFlavor.textContent = selectedFlavor ? getLangText(selectedFlavor) : "-";
-  summaryPrice.textContent = selectedFlavor ? getPriceText(selectedFlavor) : `0 ${getCurrencyLabel()}`;
-  summaryGift.textContent = selectedGift ? getLangText(selectedGift) : (currentLang === "ar" ? "بدون إضافة" : "No extra");
-  summaryGiftPrice.textContent = selectedGift ? getPriceText(selectedGift) : `0 ${getCurrencyLabel()}`;
+  summaryProduct.textContent = getProductName(selectedProduct);
+  summaryFlavor.textContent = getNamesList(selectedFlavors);
+  summaryPrice.textContent = getPricesList(selectedFlavors);
+  summaryGift.textContent = getNamesList(selectedGifts);
+  summaryGiftPrice.textContent = getPricesList(selectedGifts);
   summaryQty.textContent = quantity;
   quantityValue.textContent = quantity;
   summaryTotal.textContent = `${totalPrice} ${getCurrencyLabel()}`;
@@ -394,9 +477,8 @@ function updateSummary() {
   });
 
   if (sendOrderBtn) {
-    sendOrderBtn.textContent = currentLang === "ar"
-      ? sendOrderBtn.dataset.ar
-      : sendOrderBtn.dataset.en;
+    sendOrderBtn.textContent =
+      currentLang === "ar" ? sendOrderBtn.dataset.ar : sendOrderBtn.dataset.en;
   }
 }
 
@@ -406,24 +488,16 @@ function renderModalContent() {
   modalTitle.textContent = getProductName(selectedProduct);
   modalDescription.textContent = getProductDescription(selectedProduct);
 
-  const flavorImage = selectedFlavor?.image_url || selectedProduct.image_url;
-  modalImage.src = getSafeImage(flavorImage, getSafeImage(selectedProduct.image_url));
+  const mainImage =
+    selectedFlavors?.[0]?.image_url || selectedProduct.image_url || "images/cakes.jpg";
+
+  modalImage.src = getSafeImage(mainImage, getSafeImage(selectedProduct.image_url));
   modalImage.alt = getProductName(selectedProduct);
 
-  createFlavorButtons(flavorOptions, selectedProduct.product_flavors, (item, button) => {
-    selectedFlavor = item;
-    modalImage.src = getSafeImage(item.image_url, getSafeImage(selectedProduct.image_url));
-    modalImage.alt = getLangText(item);
+  createFlavorButtons(flavorOptions, selectedProduct.product_flavors);
 
-    [...flavorOptions.children].forEach((child) => child.classList.remove("active"));
-    button.classList.add("active");
-    updateSummary();
-  });
-
-  createGiftButtons(giftOptions, selectedProduct.product_gifts, (item) => {
-    selectedGift = item;
-    updateSummary();
-  });
+  const gifts = getGiftOptionsForProduct(selectedProduct);
+  createGiftButtons(giftOptions, gifts);
 
   updateSummary();
 }
@@ -469,9 +543,7 @@ if (increaseQty) {
 }
 
 if (orderNote) {
-  orderNote.addEventListener("input", () => {
-    updateSummary();
-  });
+  orderNote.addEventListener("input", () => updateSummary());
 }
 
 function saveCart() {
@@ -488,11 +560,7 @@ function renderCart() {
 
   cartItems.innerHTML = "";
 
-  if (cart.length === 0) {
-    cartEmpty.style.display = "block";
-  } else {
-    cartEmpty.style.display = "none";
-  }
+  cartEmpty.style.display = cart.length === 0 ? "block" : "none";
 
   let total = 0;
 
@@ -503,15 +571,16 @@ function renderCart() {
     itemEl.className = "cart-item";
 
     const productName = currentLang === "ar" ? item.productAr : item.productEn;
-    const flavorName = currentLang === "ar" ? item.flavorAr : item.flavorEn;
-    const giftName = currentLang === "ar" ? item.giftAr : item.giftEn;
-    const totalText = currentLang === "ar" ? `${item.totalValue} درهم` : `${item.totalValue} AED`;
+    const flavorName = currentLang === "ar" ? item.flavorsAr : item.flavorsEn;
+    const giftName = currentLang === "ar" ? item.giftsAr : item.giftsEn;
+    const totalText =
+      currentLang === "ar" ? `${item.totalValue} درهم` : `${item.totalValue} AED`;
     const noteText = currentLang === "ar" ? item.noteAr || "" : item.noteEn || "";
 
     itemEl.innerHTML = `
       <h4>${productName}</h4>
-      <div class="cart-meta">${currentLang === "ar" ? "النكهة" : "Flavor"}: ${flavorName}</div>
-      <div class="cart-meta">${currentLang === "ar" ? "الهدية" : "Gift"}: ${giftName}</div>
+      <div class="cart-meta">${currentLang === "ar" ? "النكهات" : "Flavors"}: ${flavorName}</div>
+      <div class="cart-meta">${currentLang === "ar" ? "الإضافات" : "Gift Options"}: ${giftName}</div>
       <div class="cart-meta">${currentLang === "ar" ? "الكمية" : "Qty"}: ${item.quantity}</div>
       ${noteText ? `<div class="cart-meta">${currentLang === "ar" ? "ملاحظات" : "Notes"}: ${noteText}</div>` : ""}
       <div class="cart-item-row">
@@ -564,15 +633,15 @@ if (addToCartBtn) {
     if (!selectedProduct) return;
 
     const totalValue =
-      (Number(selectedFlavor?.price_value || 0) + Number(selectedGift?.price_value || 0)) * quantity;
+      (getTotalFlavorPrice() + getTotalGiftPrice()) * quantity;
 
     cart.push({
       productEn: selectedProduct.name_en || "",
       productAr: selectedProduct.name_ar || selectedProduct.name_en || "",
-      flavorEn: selectedFlavor?.name_en || "Standard option",
-      flavorAr: selectedFlavor?.name_ar || "الخيار الأساسي",
-      giftEn: selectedGift?.name_en || "No extra",
-      giftAr: selectedGift?.name_ar || "بدون إضافة",
+      flavorsEn: selectedFlavors.map((item) => item.name_en).join(", "),
+      flavorsAr: selectedFlavors.map((item) => item.name_ar || item.name_en).join(", "),
+      giftsEn: selectedGifts.length ? selectedGifts.map((item) => item.name_en).join(", ") : "None",
+      giftsAr: selectedGifts.length ? selectedGifts.map((item) => item.name_ar || item.name_en).join(", ") : "بدون",
       noteEn: orderNote?.value?.trim() || "",
       noteAr: orderNote?.value?.trim() || "",
       quantity,
@@ -591,31 +660,35 @@ if (cartCheckoutBtn) {
     if (!cart.length) return;
 
     let total = 0;
+
     const lines = cart.map((item, index) => {
       total += item.totalValue;
-      const noteBlock = item.noteEn || item.noteAr
-        ? currentLang === "ar"
-          ? `ملاحظات: ${item.noteAr || item.noteEn}`
-          : `Notes: ${item.noteEn || item.noteAr}`
-        : "";
+
+      const noteBlock =
+        item.noteEn || item.noteAr
+          ? currentLang === "ar"
+            ? `ملاحظات: ${item.noteAr || item.noteEn}`
+            : `Notes: ${item.noteEn || item.noteAr}`
+          : "";
 
       if (currentLang === "ar") {
         return `${index + 1}) ${item.productAr}
-النكهة: ${item.flavorAr}
-الهدية: ${item.giftAr}
+النكهات: ${item.flavorsAr}
+الإضافات: ${item.giftsAr}
 الكمية: ${item.quantity}
 ${noteBlock ? noteBlock + "\n" : ""}السعر: ${item.totalValue} درهم`;
       }
 
       return `${index + 1}) ${item.productEn}
-Flavor: ${item.flavorEn}
-Gift: ${item.giftEn}
+Flavors: ${item.flavorsEn}
+Gift Options: ${item.giftsEn}
 Qty: ${item.quantity}
 ${noteBlock ? noteBlock + "\n" : ""}Price: ${item.totalValue} AED`;
     });
 
-    const message = currentLang === "ar"
-      ? `مرحباً 👋
+    const message =
+      currentLang === "ar"
+        ? `مرحباً 👋
 
 أرغب في طلب العناصر التالية:
 
@@ -624,7 +697,7 @@ ${lines.join("\n\n")}
 الإجمالي: ${total} درهم
 
 شكراً`
-      : `Hello 👋
+        : `Hello 👋
 
 I would like to place the following order:
 
@@ -634,7 +707,10 @@ Total: ${total} AED
 
 Thank you`;
 
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
   });
 }
 
@@ -643,43 +719,43 @@ if (sendOrderBtn) {
     if (!selectedProduct) return;
 
     const productName = getProductName(selectedProduct);
-    const flavorName = selectedFlavor ? getLangText(selectedFlavor) : "-";
-    const flavorPrice = selectedFlavor ? getPriceText(selectedFlavor) : `0 ${getCurrencyLabel()}`;
-    const giftName = selectedGift ? getLangText(selectedGift) : (currentLang === "ar" ? "بدون إضافة" : "No extra");
-    const giftPrice = selectedGift ? getPriceText(selectedGift) : `0 ${getCurrencyLabel()}`;
     const noteValue = orderNote?.value?.trim() || "";
     const totalPrice =
-      (Number(selectedFlavor?.price_value || 0) + Number(selectedGift?.price_value || 0)) * quantity;
+      (getTotalFlavorPrice() + getTotalGiftPrice()) * quantity;
 
-    const message = currentLang === "ar"
-      ? `مرحباً 👋
+    const message =
+      currentLang === "ar"
+        ? `مرحباً 👋
 
 أرغب في طلب:
 
 الصنف: ${productName}
-النكهة: ${flavorName}
-سعر النكهة: ${flavorPrice}
-خيار الهدية: ${giftName}
-سعر الهدية: ${giftPrice}
+النكهات: ${getNamesList(selectedFlavors)}
+أسعار النكهات: ${getPricesList(selectedFlavors)}
+الإضافات: ${getNamesList(selectedGifts)}
+أسعار الإضافات: ${getPricesList(selectedGifts)}
 الكمية: ${quantity}
 ${noteValue ? `ملاحظات: ${noteValue}\n` : ""}الإجمالي التقريبي: ${totalPrice} ${getCurrencyLabel()}
 
 شكراً`
-      : `Hello 👋
+        : `Hello 👋
 
 I would like to place an order:
 
 Item: ${productName}
-Flavor: ${flavorName}
-Flavor Price: ${flavorPrice}
-Gift Option: ${giftName}
-Gift Price: ${giftPrice}
+Flavors: ${getNamesList(selectedFlavors)}
+Flavor Prices: ${getPricesList(selectedFlavors)}
+Gift Options: ${getNamesList(selectedGifts)}
+Gift Prices: ${getPricesList(selectedGifts)}
 Quantity: ${quantity}
 ${noteValue ? `Notes: ${noteValue}\n` : ""}Estimated Total: ${totalPrice} ${getCurrencyLabel()}
 
 Thank you`;
 
-    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank");
+    window.open(
+      `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
   });
 }
 
