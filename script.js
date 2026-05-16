@@ -1,9 +1,8 @@
-const db = window.db;
-
 const whatsappNumber = "971528112120";
 const body = document.body;
 const langButtons = document.querySelectorAll(".lang-btn");
 const translatableElements = document.querySelectorAll("[data-en][data-ar]");
+const revealItems = document.querySelectorAll(".reveal");
 
 const modal = document.getElementById("productModal");
 const modalClose = document.getElementById("modalClose");
@@ -38,137 +37,136 @@ const cartTotal = document.getElementById("cartTotal");
 const cartEmpty = document.getElementById("cartEmpty");
 const cartCheckoutBtn = document.getElementById("cartCheckoutBtn");
 
-const productsContainer = document.getElementById("productsContainer");
+const productData = {
+  "cakes": {
+    image: "images/cakes.jpg",
+    flavors: [
+      { en: "Chocolate", ar: "شوكولاتة", image: "images/Celebration Cakes Chocolate .jpg", priceEn: "260 AED", priceAr: "260 درهم", priceValue: 260 },
+      { en: "Red Velvet", ar: "ريد فيلفت", image: "images/Celebration Cakes Red Velvet.jpg", priceEn: "280 AED", priceAr: "280 درهم", priceValue: 280 },
+      { en: "Pistachio", ar: "فستق", image: "images/Celebration Cakes Pistachio.jpg", priceEn: "295 AED", priceAr: "295 درهم", priceValue: 295 }
+    ],
+    gifts: [
+      { en: "Standard Cake Box", ar: "علبة كيك عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Wrapping", ar: "تغليف هدية", priceEn: "20 AED", priceAr: "20 درهم", priceValue: 20 },
+      { en: "Premium Presentation", ar: "تقديم فاخر", priceEn: "35 AED", priceAr: "35 درهم", priceValue: 35 }
+    ]
+  },
+
+  "cookies": {
+    image: "images/cookies.jpg",
+    flavors: [
+      { en: "Double Chocolate", ar: "دبل شوكولاتة", image: "images/Cookies Double Chocolate.jpg", priceEn: "55 AED", priceAr: "55 درهم", priceValue: 55 },
+      { en: "Pistachio", ar: "فستق", image: "images/Cookies Pistachio.jpg", priceEn: "60 AED", priceAr: "60 درهم", priceValue: 60 },
+      { en: "Lotus", ar: "لوتس", image: "images/Cookies Lotus.jpg", priceEn: "58 AED", priceAr: "58 درهم", priceValue: 58 }
+    ],
+    gifts: [
+      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "12 AED", priceAr: "12 درهم", priceValue: 12 },
+      { en: "Premium Cookie Box", ar: "بوكس كوكيز فاخر", priceEn: "20 AED", priceAr: "20 درهم", priceValue: 20 }
+    ]
+  },
+
+  "swiss-roll": {
+    image: "images/swiss roll.jpg",
+    flavors: [
+      { en: "Vanilla", ar: "فانيلا", image: "images/swiss roll vanilla.jpg", priceEn: "75 AED", priceAr: "75 درهم", priceValue: 75 },
+      { en: "Pistachio", ar: "فستق", image: "images/swiss roll pistachio.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 },
+      { en: "Raspberry", ar: "توت العليق", image: "images/swiss roll raspberry.jpg", priceEn: "82 AED", priceAr: "82 درهم", priceValue: 82 }
+    ],
+    gifts: [
+      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "15 AED", priceAr: "15 درهم", priceValue: 15 },
+      { en: "Premium Roll Box", ar: "علبة سويس رول فاخرة", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
+    ]
+  },
+    "fruit-tarts": {
+    image: "images/Small tart mix.jpg",
+    flavors: [
+      { en: "Mix", ar: "مشكل", image: "images/Small tart mix.jpg", priceEn: "76 AED", priceAr: "76 درهم", priceValue: 76 },
+      { en: "Strawberry", ar: "فراولة", image: "images/Small tart Strawberry.jpg", priceEn: "70 AED", priceAr: "70 درهم", priceValue: 70 },
+      { en: "Kiwi Berry", ar: "كيوي وتوت", image: "images/Small tart Kiwi Berry.jpg", priceEn: "74 AED", priceAr: "74 درهم", priceValue: 74 }
+    ],
+    gifts: [
+      { en: "Standard Tray", ar: "صينية عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
+      { en: "Premium Tart Box", ar: "بوكس تارت فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
+    ]
+  },
+
+  "cinnamon-rolls": {
+    image: "images/cinnamon rolls.jpg",
+    flavors: [
+      { en: "Classic Cinnamon", ar: "سينامون كلاسيك", image: "images/cinnamon rolls.jpg", priceEn: "65 AED", priceAr: "65 درهم", priceValue: 65 }
+    ],
+    gifts: [
+      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "12 AED", priceAr: "12 درهم", priceValue: 12 },
+      { en: "Premium Cinnamon Box", ar: "بوكس سينامون فاخر", priceEn: "18 AED", priceAr: "18 درهم", priceValue: 18 }
+    ]
+  },
+
+  "mini-cheesecakes": {
+    image: "images/Small cheesecake.jpg",
+    flavors: [
+      { en: "Strawberry", ar: "فراولة", image: "images/Small cheesecake Strawberry.jpg", priceEn: "85 AED", priceAr: "85 درهم", priceValue: 85 },
+      { en: "Blueberry", ar: "توت أزرق", image: "images/Small cheesecake Blueberry.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 },
+      { en: "Chocolate", ar: "شوكولاتة", image: "images/Small cheesecake chocolate.jpg", priceEn: "90 AED", priceAr: "90 درهم", priceValue: 90 },
+      { en: "Pistachio", ar: "فستق", image: "images/Small cheesecake Pistachio.jpg", priceEn: "95 AED", priceAr: "95 درهم", priceValue: 95 },
+      { en: "Lotus", ar: "لوتس", image: "images/Small cheesecake Lotus.jpg", priceEn: "92 AED", priceAr: "92 درهم", priceValue: 92 }
+    ],
+    gifts: [
+      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
+      { en: "Premium Cheesecake Box", ar: "بوكس تشيزكيك فاخر", priceEn: "24 AED", priceAr: "24 درهم", priceValue: 24 }
+    ]
+  },
+
+  "dessert-cups": {
+    image: "images/cups.jpg",
+    flavors: [
+      { en: "Berry Cheesecake", ar: "تشيزكيك التوت", image: "images/cups berry.jpg", priceEn: "78 AED", priceAr: "78 درهم", priceValue: 78 },
+      { en: "Tiramisu", ar: "تيراميسو", image: "images/cups tiramisu.jpg", priceEn: "82 AED", priceAr: "82 درهم", priceValue: 82 },
+      { en: "Lotus", ar: "لوتس", image: "images/cups Lotus.jpg", priceEn: "80 AED", priceAr: "80 درهم", priceValue: 80 },
+      { en: "Pistachio", ar: "فستق", image: "images/cups Pistachio.jpg", priceEn: "86 AED", priceAr: "86 درهم", priceValue: 86 }
+    ],
+    gifts: [
+      { en: "Standard Tray", ar: "صينية عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "14 AED", priceAr: "14 درهم", priceValue: 14 },
+      { en: "Premium Cup Box", ar: "بوكس أكواب فاخر", priceEn: "22 AED", priceAr: "22 درهم", priceValue: 22 }
+    ]
+  },
+
+  "tiramisu-cubes": {
+    image: "images/cube tiramisu.jpg",
+    flavors: [
+      { en: "Classic Tiramisu", ar: "تيراميسو كلاسيك", image: "images/cube tiramisu.jpg", priceEn: "88 AED", priceAr: "88 درهم", priceValue: 88 }
+    ],
+    gifts: [
+      { en: "Standard Box", ar: "علبة عادية", priceEn: "0 AED", priceAr: "0 درهم", priceValue: 0 },
+      { en: "Gift Box", ar: "علبة هدية", priceEn: "16 AED", priceAr: "16 درهم", priceValue: 16 },
+      { en: "Premium Tiramisu Box", ar: "بوكس تيراميسو فاخر", priceEn: "25 AED", priceAr: "25 درهم", priceValue: 25 }
+    ]
+  }
+};
 
 let currentLang = "en";
-let selectedProduct = null;
-let selectedFlavors = [];
-let selectedGifts = [];
+let selectedProductKey = "";
+let selectedProductCard = null;
+let selectedFlavor = null;
+let selectedGift = null;
 let quantity = 1;
 let cart = JSON.parse(localStorage.getItem("wordOfSweetsCart")) || [];
-let productsFromDB = [];
-
-const baseGiftOptions = [
-  {
-    id: "gift-packaging",
-    name_en: "Gift Packaging",
-    name_ar: "تغليف هدية",
-    price_value: 10,
-    sort_order: 1
-  },
-  {
-    id: "greeting-card",
-    name_en: "Greeting Card",
-    name_ar: "بطاقة تهنئة",
-    price_value: 5,
-    sort_order: 2
-  },
-  {
-    id: "mixed-selection",
-    name_en: "Mixed Selection",
-    name_ar: "تشكيلة مشكلة",
-    price_value: 15,
-    sort_order: 3
-  }
-];
-
-function getRevealItems() {
-  return document.querySelectorAll(".reveal");
-}
 
 function getLangText(item) {
-  if (!item) return "-";
-  return currentLang === "ar"
-    ? item.name_ar || item.name_en || "-"
-    : item.name_en || item.name_ar || "-";
+  return currentLang === "ar" ? item.ar : item.en;
+}
+
+function getPriceText(item) {
+  return currentLang === "ar" ? item.priceAr : item.priceEn;
 }
 
 function getCurrencyLabel() {
   return currentLang === "ar" ? "درهم" : "AED";
-}
-
-function getPriceText(item) {
-  const value = Number(item?.price_value || 0);
-  return currentLang === "ar" ? `${value} درهم` : `${value} AED`;
-}
-
-function getGiftLabel(item) {
-  const value = Number(item?.price_value || 0);
-
-  if (currentLang === "ar") {
-    return `${getLangText(item)} (+${value} درهم)`;
-  }
-
-  return `${getLangText(item)} (+${value} AED)`;
-}
-
-function getProductName(product) {
-  if (!product) return "-";
-  return currentLang === "ar"
-    ? product.name_ar || product.name_en || "-"
-    : product.name_en || product.name_ar || "-";
-}
-
-function getProductDescription(product) {
-  if (!product) return "";
-  return currentLang === "ar"
-    ? product.desc_ar || product.desc_en || ""
-    : product.desc_en || product.desc_ar || "";
-}
-
-function getShortDescription(product) {
-  const fullText = getProductDescription(product).trim();
-  if (!fullText) return "";
-
-  const maxLength = currentLang === "ar" ? 55 : 58;
-
-  if (fullText.length <= maxLength) return fullText;
-
-  return fullText.slice(0, maxLength).trim() + "...";
-}
-
-function getSafeImage(url, fallback = "images/cakes.jpg") {
-  return url && String(url).trim() ? url : fallback;
-}
-
-function sortByOrder(items) {
-  return [...(items || [])].sort(
-    (a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0)
-  );
-}
-
-function getGiftOptionsForProduct(product) {
-  const flavorsCount = product?.product_flavors?.length || 0;
-
-  if (flavorsCount <= 1) {
-    return baseGiftOptions.filter((gift) => gift.id !== "mixed-selection");
-  }
-
-  return baseGiftOptions;
-}
-
-function getTotalFlavorPrice() {
-  return selectedFlavors.reduce((sum, item) => sum + Number(item.price_value || 0), 0);
-}
-
-function getTotalGiftPrice() {
-  return selectedGifts.reduce((sum, item) => sum + Number(item.price_value || 0), 0);
-}
-
-function getNamesList(items) {
-  if (!items || !items.length) {
-    return currentLang === "ar" ? "بدون" : "None";
-  }
-
-  return items.map((item) => getLangText(item)).join(", ");
-}
-
-function getPricesList(items) {
-  if (!items || !items.length) {
-    return `0 ${getCurrencyLabel()}`;
-  }
-
-  return items.map((item) => `${getLangText(item)}: ${getPriceText(item)}`).join(" | ");
 }
 
 function updateNotePlaceholder() {
@@ -176,10 +174,9 @@ function updateNotePlaceholder() {
 
   orderNote.placeholder =
     currentLang === "ar"
-      ? orderNote.dataset.arPlaceholder
-      : orderNote.dataset.enPlaceholder;
+      ? "أضف ملاحظاتك الخاصة هنا..."
+      : "Add your special notes here...";
 }
-
 function setLanguage(lang) {
   currentLang = lang;
 
@@ -188,6 +185,7 @@ function setLanguage(lang) {
   });
 
   body.classList.toggle("lang-ar", lang === "ar");
+
   document.documentElement.lang = lang;
   document.documentElement.dir = "ltr";
 
@@ -213,14 +211,45 @@ function setLanguage(lang) {
 
   updateNotePlaceholder();
 
-  if (productsFromDB.length) {
-    renderProductsFromDB();
+  if (selectedProductCard) {
+    modalTitle.textContent =
+      currentLang === "ar"
+        ? selectedProductCard.dataset.nameAr
+        : selectedProductCard.dataset.nameEn;
+
+    modalDescription.textContent =
+      currentLang === "ar"
+        ? selectedProductCard.dataset.descAr
+        : selectedProductCard.dataset.descEn;
+
+    const productConfig = productData[selectedProductKey];
+
+    createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
+      selectedFlavor = item;
+      modalImage.src = item.image;
+      modalImage.alt = currentLang === "ar" ? item.ar : item.en;
+
+      [...flavorOptions.children].forEach((child) =>
+        child.classList.remove("active")
+      );
+
+      button.classList.add("active");
+      updateSummary();
+    });
+
+    createGiftButtons(giftOptions, productConfig.gifts, (item, button) => {
+      selectedGift = item;
+
+      [...giftOptions.children].forEach((child) =>
+        child.classList.remove("active")
+      );
+
+      button.classList.add("active");
+      updateSummary();
+    });
   }
 
-  if (selectedProduct) {
-    renderModalContent();
-  }
-
+ renderProductCards();
   updateSummary();
   renderCart();
 }
@@ -232,7 +261,7 @@ langButtons.forEach((btn) => {
 function revealOnScroll() {
   const triggerBottom = window.innerHeight * 0.9;
 
-  getRevealItems().forEach((item) => {
+  revealItems.forEach((item) => {
     if (item.getBoundingClientRect().top < triggerBottom) {
       item.classList.add("show");
     }
@@ -242,228 +271,74 @@ function revealOnScroll() {
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("load", revealOnScroll);
 
-function createProductCardMarkup(product) {
-  const viewLabel = currentLang === "ar" ? "عرض الخيارات" : "View Options";
-  const whatsappLabel = currentLang === "ar" ? "اطلب عبر واتساب" : "Order via WhatsApp";
+function resetSelections(productKey) {
+  const product = productData[productKey];
 
-  return `
-    <article class="product-card reveal show" data-product-id="${product.id}">
-      <div class="product-image-wrap">
-        <img
-          src="${getSafeImage(product.image_url)}"
-          alt="${product.name_en || "Product"}"
-          class="product-image"
-        />
-      </div>
-
-      <div class="product-body">
-        <h3>${getProductName(product)}</h3>
-
-        <p class="product-text">
-          ${getShortDescription(product)}
-        </p>
-
-        <div class="card-actions">
-          <button class="btn btn-card btn-view-options" type="button">${viewLabel}</button>
-          <button class="btn btn-card btn-card-whatsapp quick-order" type="button">${whatsappLabel}</button>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function attachProductEvents() {
-  document.querySelectorAll(".btn-view-options").forEach((button) => {
-    button.addEventListener("click", () => {
-      const card = button.closest(".product-card");
-      const productId = Number(card?.dataset.productId);
-      const product = productsFromDB.find((item) => item.id === productId);
-      if (product) openModal(product);
-    });
-  });
-
-  document.querySelectorAll(".quick-order").forEach((button) => {
-    button.addEventListener("click", () => {
-      const card = button.closest(".product-card");
-      const productId = Number(card?.dataset.productId);
-      const product = productsFromDB.find((item) => item.id === productId);
-      if (!product) return;
-
-      const productName = getProductName(product);
-      const text =
-        currentLang === "ar"
-          ? `مرحباً، أرغب في طلب ${productName}.`
-          : `Hello, I would like to order ${productName}.`;
-
-      window.open(
-        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
-        "_blank"
-      );
-    });
-  });
-}
-
-function renderProductsFromDB() {
-  if (!productsContainer) return;
-
-  productsContainer.innerHTML = productsFromDB
-    .map((product) => createProductCardMarkup(product))
-    .join("");
-
-  attachProductEvents();
-  revealOnScroll();
-}
-
-async function loadProductsFromDB() {
-  if (!db || !productsContainer) return;
-
-  const { data, error } = await db
-    .from("products")
-    .select(`
-      *,
-      product_flavors (
-        id,
-        product_id,
-        name_en,
-        name_ar,
-        image_url,
-        price_value,
-        sort_order,
-        created_at
-      )
-    `)
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error("Error loading products:", error);
-    return;
-  }
-
-  productsFromDB = (data || []).map((product) => ({
-    ...product,
-    product_flavors: sortByOrder(product.product_flavors)
-  }));
-
-  renderProductsFromDB();
-}
-
-function resetSelections(product) {
-  selectedProduct = product;
-  selectedFlavors = product?.product_flavors?.length ? [product.product_flavors[0]] : [];
-  selectedGifts = [];
+  selectedFlavor = product.flavors[0] || null;
+  selectedGift = product.gifts[0] || null;
   quantity = 1;
 
   if (orderNote) orderNote.value = "";
 }
 
-function toggleFlavor(item, button) {
-  const exists = selectedFlavors.some((flavor) => flavor.id === item.id);
-
-  if (exists) {
-    if (selectedFlavors.length === 1) return;
-    selectedFlavors = selectedFlavors.filter((flavor) => flavor.id !== item.id);
-    button.classList.remove("active");
-  } else {
-    selectedFlavors.push(item);
-    button.classList.add("active");
-    modalImage.src = getSafeImage(item.image_url, getSafeImage(selectedProduct.image_url));
-    modalImage.alt = getLangText(item);
-  }
-
-  updateSummary();
-}
-
-function toggleGift(item, button) {
-  const exists = selectedGifts.some((gift) => gift.id === item.id);
-
-  if (exists) {
-    selectedGifts = selectedGifts.filter((gift) => gift.id !== item.id);
-    button.classList.remove("active");
-  } else {
-    selectedGifts.push(item);
-    button.classList.add("active");
-  }
-
-  updateSummary();
-}
-
-function createFlavorButtons(container, items) {
+function createGiftButtons(container, items, clickHandler) {
   if (!container) return;
+
   container.innerHTML = "";
 
-  if (!items || !items.length) {
-    const standardOption = {
-      id: "standard-option",
-      name_en: "Standard option",
-      name_ar: "الخيار الأساسي",
-      image_url: selectedProduct?.image_url || "",
-      price_value: 0
-    };
-
-    selectedFlavors = [standardOption];
-
+  items.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "flavor-btn active";
+    button.className = "gift-btn" + (index === 0 ? " active" : "");
+
     button.innerHTML = `
-      <img src="${getSafeImage(selectedProduct?.image_url)}" alt="Standard">
-      <span class="flavor-name">${getLangText(standardOption)}</span>
-      <span class="flavor-price">${getPriceText(standardOption)}</span>
+      <span class="option-name">${getLangText(item)}</span>
+      <span class="option-price">${getPriceText(item)}</span>
     `;
 
-    container.appendChild(button);
-    return;
-  }
-
-  items.forEach((item) => {
-    const isActive = selectedFlavors.some((flavor) => flavor.id === item.id);
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "flavor-btn" + (isActive ? " active" : "");
-    button.innerHTML = `
-      <img src="${getSafeImage(item.image_url, getSafeImage(selectedProduct?.image_url))}" alt="${item.name_en || "Flavor"}">
-      <span class="flavor-name">${getLangText(item)}</span>
-      <span class="flavor-price">${getPriceText(item)}</span>
-    `;
-
-    button.addEventListener("click", () => toggleFlavor(item, button));
+    button.addEventListener("click", () => clickHandler(item, button));
     container.appendChild(button);
   });
 }
 
-function createGiftButtons(container, items) {
+function createFlavorButtons(container, items, clickHandler) {
   if (!container) return;
+
   container.innerHTML = "";
 
-  items.forEach((item) => {
-    const isActive = selectedGifts.some((gift) => gift.id === item.id);
-
+  items.forEach((item, index) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "gift-btn" + (isActive ? " active" : "");
+    button.className = "flavor-btn" + (index === 0 ? " active" : "");
+
     button.innerHTML = `
-      <span class="option-name">${getGiftLabel(item)}</span>
+      <img src="${item.image}" alt="${item.en}">
+      <span class="flavor-name">${getLangText(item)}</span>
+      <span class="flavor-price">${getPriceText(item)}</span>
     `;
 
-    button.addEventListener("click", () => toggleGift(item, button));
+    button.addEventListener("click", () => clickHandler(item, button));
     container.appendChild(button);
   });
 }
 
 function updateSummary() {
-  if (!selectedProduct) return;
+  if (!selectedProductCard) return;
 
-  const flavorTotal = getTotalFlavorPrice();
-  const giftTotal = getTotalGiftPrice();
-  const totalPrice = (flavorTotal + giftTotal) * quantity;
+  const name =
+    currentLang === "ar"
+      ? selectedProductCard.dataset.nameAr
+      : selectedProductCard.dataset.nameEn;
 
-  summaryProduct.textContent = getProductName(selectedProduct);
-  summaryFlavor.textContent = getNamesList(selectedFlavors);
-  summaryPrice.textContent = getPricesList(selectedFlavors);
-  summaryGift.textContent = getNamesList(selectedGifts);
-  summaryGiftPrice.textContent = getPricesList(selectedGifts);
+  const flavorPrice = selectedFlavor ? selectedFlavor.priceValue : 0;
+  const giftPrice = selectedGift ? selectedGift.priceValue : 0;
+  const totalPrice = (flavorPrice + giftPrice) * quantity;
+
+  summaryProduct.textContent = name;
+  summaryFlavor.textContent = selectedFlavor ? getLangText(selectedFlavor) : "-";
+  summaryPrice.textContent = selectedFlavor ? getPriceText(selectedFlavor) : "-";
+  summaryGift.textContent = selectedGift ? getLangText(selectedGift) : "-";
+  summaryGiftPrice.textContent = selectedGift ? getPriceText(selectedGift) : "-";
   summaryQty.textContent = quantity;
   quantityValue.textContent = quantity;
   summaryTotal.textContent = `${totalPrice} ${getCurrencyLabel()}`;
@@ -482,40 +357,217 @@ function updateSummary() {
   }
 }
 
-function renderModalContent() {
-  if (!selectedProduct) return;
+function openModal(productCard) {
+  selectedProductCard = productCard;
+  selectedProductKey = productCard.dataset.product;
 
-  modalTitle.textContent = getProductName(selectedProduct);
-  modalDescription.textContent = getProductDescription(selectedProduct);
+  const productConfig = productData[selectedProductKey];
 
-  const mainImage =
-    selectedFlavors?.[0]?.image_url || selectedProduct.image_url || "images/cakes.jpg";
+  if (!productConfig) return;
 
-  modalImage.src = getSafeImage(mainImage, getSafeImage(selectedProduct.image_url));
-  modalImage.alt = getProductName(selectedProduct);
+  resetSelections(selectedProductKey);
 
-  createFlavorButtons(flavorOptions, selectedProduct.product_flavors);
+  modalImage.src = selectedFlavor ? selectedFlavor.image : productConfig.image;
+  modalImage.alt = selectedFlavor
+    ? currentLang === "ar"
+      ? selectedFlavor.ar
+      : selectedFlavor.en
+    : currentLang === "ar"
+      ? productCard.dataset.nameAr
+      : productCard.dataset.nameEn;
 
-  const gifts = getGiftOptionsForProduct(selectedProduct);
-  createGiftButtons(giftOptions, gifts);
+  modalTitle.textContent =
+    currentLang === "ar"
+      ? productCard.dataset.nameAr
+      : productCard.dataset.nameEn;
+
+  modalDescription.textContent =
+    currentLang === "ar"
+      ? productCard.dataset.descAr
+      : productCard.dataset.descEn;
+
+  createFlavorButtons(flavorOptions, productConfig.flavors, (item, button) => {
+    selectedFlavor = item;
+    modalImage.src = item.image;
+    modalImage.alt = currentLang === "ar" ? item.ar : item.en;
+
+    [...flavorOptions.children].forEach((child) =>
+      child.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    updateSummary();
+  });
+
+  createGiftButtons(giftOptions, productConfig.gifts, (item, button) => {
+    selectedGift = item;
+
+    [...giftOptions.children].forEach((child) =>
+      child.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    updateSummary();
+  });
 
   updateSummary();
-}
-
-function openModal(product) {
-  resetSelections(product);
-  renderModalContent();
 
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
-  body.classList.add("modal-open");
+  body.style.overflow = "hidden";
 }
 
 function closeModal() {
   modal.classList.remove("active");
   modal.setAttribute("aria-hidden", "true");
-  body.classList.remove("modal-open");
+  body.style.overflow = "";
 }
+
+const productsContainer = document.getElementById("productsContainer");
+
+const productCards = [
+  {
+    key: "cakes",
+    image: "images/cakes.jpg",
+    nameEn: "Celebration Cakes",
+    nameAr: "كيك المناسبات",
+    descEn: "Luxury handcrafted cakes for elegant celebrations.",
+    descAr: "كيكات فاخرة مصنوعة بعناية للمناسبات الأنيقة."
+  },
+  {
+    key: "cookies",
+    image: "images/cookies.jpg",
+    nameEn: "Cookies",
+    nameAr: "كوكيز",
+    descEn: "Soft premium cookies with rich flavors.",
+    descAr: "كوكيز فاخر غني بالنكهات."
+  },
+  {
+    key: "swiss-roll",
+    image: "images/swiss roll.jpg",
+    nameEn: "Swiss Roll",
+    nameAr: "سويس رول",
+    descEn: "Elegant soft swiss rolls with luxury fillings.",
+    descAr: "سويس رول ناعم بحشوات فاخرة."
+  },
+  {
+    key: "fruit-tarts",
+    image: "images/Small tart mix.jpg",
+    nameEn: "Fruit Tarts",
+    nameAr: "تارت الفواكه",
+    descEn: "Boutique fruit tart selections.",
+    descAr: "تشكيلة تارت فواكه بوتيكية."
+  },
+  {
+    key: "cinnamon-rolls",
+    image: "images/cinnamon rolls.jpg",
+    nameEn: "Cinnamon Rolls",
+    nameAr: "سينامون رول",
+    descEn: "Fresh cinnamon rolls with premium glaze.",
+    descAr: "سينامون رول طازج بطبقة فاخرة."
+  },
+  {
+    key: "mini-cheesecakes",
+    image: "images/Small cheesecake.jpg",
+    nameEn: "Mini Cheesecakes",
+    nameAr: "ميني تشيزكيك",
+    descEn: "Luxury mini cheesecakes in multiple flavors.",
+    descAr: "ميني تشيزكيك فاخر بعدة نكهات."
+  },
+  {
+    key: "dessert-cups",
+    image: "images/cups.jpg",
+    nameEn: "Dessert Cups",
+    nameAr: "أكواب الحلى",
+    descEn: "Elegant dessert cups for events and gifting.",
+    descAr: "أكواب حلى أنيقة للمناسبات والهدايا."
+  },
+  {
+    key: "tiramisu-cubes",
+    image: "images/cube tiramisu.jpg",
+    nameEn: "Tiramisu Cubes",
+    nameAr: "مكعبات التيراميسو",
+    descEn: "Premium tiramisu cubes with rich coffee flavor.",
+    descAr: "مكعبات تيراميسو فاخرة بنكهة القهوة الغنية."
+  }
+];
+
+  function renderProductCards() {
+  if (!productsContainer) return;
+
+  productsContainer.innerHTML = productCards.map(product => `
+    <article 
+      class="product-card reveal show"
+      data-product="${product.key}"
+      data-name-en="${product.nameEn}"
+      data-name-ar="${product.nameAr}"
+      data-desc-en="${product.descEn}"
+      data-desc-ar="${product.descAr}"
+    >
+      <div class="product-image-wrap">
+        <img src="${product.image}" alt="${product.nameEn}" class="product-image">
+      </div>
+
+      <div class="product-body">
+        <h3 data-en="${product.nameEn}" data-ar="${product.nameAr}">
+          ${currentLang === "ar" ? product.nameAr : product.nameEn}
+        </h3>
+
+        <p 
+          class="product-text"
+          data-en="${product.descEn}"
+          data-ar="${product.descAr}"
+        >
+          ${currentLang === "ar" ? product.descAr : product.descEn}
+        </p>
+
+        <div class="card-actions">
+          <button class="btn btn-card btn-view-options" type="button">
+            ${currentLang === "ar" ? "عرض الخيارات" : "View Options"}
+          </button>
+
+          <button class="btn btn-card-whatsapp quick-order" type="button">
+            ${currentLang === "ar" ? "اطلب عبر واتساب" : "WhatsApp Order"}
+          </button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  attachProductCardEvents();
+}
+
+function attachProductCardEvents() {
+  document.querySelectorAll(".btn-view-options").forEach((button) => {
+    button.addEventListener("click", () => {
+      openModal(button.closest(".product-card"));
+    });
+  });
+if (productsContainer) {
+  document.querySelectorAll(".quick-order").forEach((button) => {
+    button.addEventListener("click", () => {
+      const card = button.closest(".product-card");
+      const productName =
+        currentLang === "ar" ? card.dataset.nameAr : card.dataset.nameEn;
+
+      const text =
+        currentLang === "ar"
+          ? `مرحباً، أرغب في طلب ${productName}.`
+          : `Hello, I would like to order ${productName}.`;
+
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`,
+        "_blank"
+      );
+    });
+  });
+}
+
+}
+
+renderProductCards();
+
+
 
 if (modalClose) modalClose.addEventListener("click", closeModal);
 if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
@@ -543,7 +595,9 @@ if (increaseQty) {
 }
 
 if (orderNote) {
-  orderNote.addEventListener("input", () => updateSummary());
+  orderNote.addEventListener("input", () => {
+    updateSummary();
+  });
 }
 
 function saveCart() {
@@ -560,7 +614,11 @@ function renderCart() {
 
   cartItems.innerHTML = "";
 
-  cartEmpty.style.display = cart.length === 0 ? "block" : "none";
+  if (cart.length === 0) {
+    cartEmpty.style.display = "block";
+  } else {
+    cartEmpty.style.display = "none";
+  }
 
   let total = 0;
 
@@ -571,18 +629,24 @@ function renderCart() {
     itemEl.className = "cart-item";
 
     const productName = currentLang === "ar" ? item.productAr : item.productEn;
-    const flavorName = currentLang === "ar" ? item.flavorsAr : item.flavorsEn;
-    const giftName = currentLang === "ar" ? item.giftsAr : item.giftsEn;
-    const totalText =
-      currentLang === "ar" ? `${item.totalValue} درهم` : `${item.totalValue} AED`;
+    const flavorName = currentLang === "ar" ? item.flavorAr : item.flavorEn;
+    const giftName = currentLang === "ar" ? item.giftAr : item.giftEn;
     const noteText = currentLang === "ar" ? item.noteAr || "" : item.noteEn || "";
+    const totalText =
+      currentLang === "ar"
+        ? `${item.totalValue} درهم`
+        : `${item.totalValue} AED`;
 
     itemEl.innerHTML = `
       <h4>${productName}</h4>
-      <div class="cart-meta">${currentLang === "ar" ? "النكهات" : "Flavors"}: ${flavorName}</div>
-      <div class="cart-meta">${currentLang === "ar" ? "الإضافات" : "Gift Options"}: ${giftName}</div>
+      <div class="cart-meta">${currentLang === "ar" ? "النكهة" : "Flavor"}: ${flavorName}</div>
+      <div class="cart-meta">${currentLang === "ar" ? "الهدية" : "Gift"}: ${giftName}</div>
       <div class="cart-meta">${currentLang === "ar" ? "الكمية" : "Qty"}: ${item.quantity}</div>
-      ${noteText ? `<div class="cart-meta">${currentLang === "ar" ? "ملاحظات" : "Notes"}: ${noteText}</div>` : ""}
+      ${
+        noteText
+          ? `<div class="cart-meta">${currentLang === "ar" ? "ملاحظات" : "Notes"}: ${noteText}</div>`
+          : ""
+      }
       <div class="cart-item-row">
         <div class="cart-item-price">${totalText}</div>
         <button class="cart-remove" type="button" data-index="${index}">
@@ -595,7 +659,8 @@ function renderCart() {
   });
 
   if (cartTotal) {
-    cartTotal.textContent = currentLang === "ar" ? `${total} درهم` : `${total} AED`;
+    cartTotal.textContent =
+      currentLang === "ar" ? `${total} درهم` : `${total} AED`;
   }
 
   cartItems.querySelectorAll(".cart-remove").forEach((btn) => {
@@ -612,6 +677,7 @@ function renderCart() {
 
 function openCart() {
   if (!cartDrawer || !cartOverlay) return;
+
   cartDrawer.classList.add("active");
   cartOverlay.classList.add("active");
   cartDrawer.setAttribute("aria-hidden", "false");
@@ -619,6 +685,7 @@ function openCart() {
 
 function closeCart() {
   if (!cartDrawer || !cartOverlay) return;
+
   cartDrawer.classList.remove("active");
   cartOverlay.classList.remove("active");
   cartDrawer.setAttribute("aria-hidden", "true");
@@ -630,18 +697,19 @@ if (cartOverlay) cartOverlay.addEventListener("click", closeCart);
 
 if (addToCartBtn) {
   addToCartBtn.addEventListener("click", () => {
-    if (!selectedProduct) return;
+    if (!selectedProductCard || !selectedFlavor || !selectedGift) return;
 
     const totalValue =
-      (getTotalFlavorPrice() + getTotalGiftPrice()) * quantity;
+      ((selectedFlavor.priceValue || 0) + (selectedGift.priceValue || 0)) *
+      quantity;
 
     cart.push({
-      productEn: selectedProduct.name_en || "",
-      productAr: selectedProduct.name_ar || selectedProduct.name_en || "",
-      flavorsEn: selectedFlavors.map((item) => item.name_en).join(", "),
-      flavorsAr: selectedFlavors.map((item) => item.name_ar || item.name_en).join(", "),
-      giftsEn: selectedGifts.length ? selectedGifts.map((item) => item.name_en).join(", ") : "None",
-      giftsAr: selectedGifts.length ? selectedGifts.map((item) => item.name_ar || item.name_en).join(", ") : "بدون",
+      productEn: selectedProductCard.dataset.nameEn,
+      productAr: selectedProductCard.dataset.nameAr,
+      flavorEn: selectedFlavor.en,
+      flavorAr: selectedFlavor.ar,
+      giftEn: selectedGift.en,
+      giftAr: selectedGift.ar,
       noteEn: orderNote?.value?.trim() || "",
       noteAr: orderNote?.value?.trim() || "",
       quantity,
@@ -673,15 +741,15 @@ if (cartCheckoutBtn) {
 
       if (currentLang === "ar") {
         return `${index + 1}) ${item.productAr}
-النكهات: ${item.flavorsAr}
-الإضافات: ${item.giftsAr}
+النكهة: ${item.flavorAr}
+الهدية: ${item.giftAr}
 الكمية: ${item.quantity}
 ${noteBlock ? noteBlock + "\n" : ""}السعر: ${item.totalValue} درهم`;
       }
 
       return `${index + 1}) ${item.productEn}
-Flavors: ${item.flavorsEn}
-Gift Options: ${item.giftsEn}
+Flavor: ${item.flavorEn}
+Gift: ${item.giftEn}
 Qty: ${item.quantity}
 ${noteBlock ? noteBlock + "\n" : ""}Price: ${item.totalValue} AED`;
     });
@@ -716,12 +784,23 @@ Thank you`;
 
 if (sendOrderBtn) {
   sendOrderBtn.addEventListener("click", () => {
-    if (!selectedProduct) return;
+    if (!selectedProductCard) return;
 
-    const productName = getProductName(selectedProduct);
+    const productName =
+      currentLang === "ar"
+        ? selectedProductCard.dataset.nameAr
+        : selectedProductCard.dataset.nameEn;
+
+    const flavorName = selectedFlavor ? getLangText(selectedFlavor) : "-";
+    const flavorPrice = selectedFlavor ? getPriceText(selectedFlavor) : "-";
+    const giftName = selectedGift ? getLangText(selectedGift) : "-";
+    const giftPrice = selectedGift ? getPriceText(selectedGift) : "-";
     const noteValue = orderNote?.value?.trim() || "";
+
     const totalPrice =
-      (getTotalFlavorPrice() + getTotalGiftPrice()) * quantity;
+      ((selectedFlavor ? selectedFlavor.priceValue : 0) +
+        (selectedGift ? selectedGift.priceValue : 0)) *
+      quantity;
 
     const message =
       currentLang === "ar"
@@ -730,10 +809,10 @@ if (sendOrderBtn) {
 أرغب في طلب:
 
 الصنف: ${productName}
-النكهات: ${getNamesList(selectedFlavors)}
-أسعار النكهات: ${getPricesList(selectedFlavors)}
-الإضافات: ${getNamesList(selectedGifts)}
-أسعار الإضافات: ${getPricesList(selectedGifts)}
+النكهة: ${flavorName}
+سعر النكهة: ${flavorPrice}
+خيار الهدية: ${giftName}
+سعر الهدية: ${giftPrice}
 الكمية: ${quantity}
 ${noteValue ? `ملاحظات: ${noteValue}\n` : ""}الإجمالي التقريبي: ${totalPrice} ${getCurrencyLabel()}
 
@@ -743,10 +822,10 @@ ${noteValue ? `ملاحظات: ${noteValue}\n` : ""}الإجمالي التقر�
 I would like to place an order:
 
 Item: ${productName}
-Flavors: ${getNamesList(selectedFlavors)}
-Flavor Prices: ${getPricesList(selectedFlavors)}
-Gift Options: ${getNamesList(selectedGifts)}
-Gift Prices: ${getPricesList(selectedGifts)}
+Flavor: ${flavorName}
+Flavor Price: ${flavorPrice}
+Gift Option: ${giftName}
+Gift Price: ${giftPrice}
 Quantity: ${quantity}
 ${noteValue ? `Notes: ${noteValue}\n` : ""}Estimated Total: ${totalPrice} ${getCurrencyLabel()}
 
@@ -759,6 +838,21 @@ Thank you`;
   });
 }
 
+function fixDeveloperFooterLink() {
+  const developerLink =
+    document.querySelector(".developer-link") ||
+    document.querySelector("#developerLink") ||
+    document.querySelector('a[href*="portfolio"]') ||
+    document.querySelector('a[href*="porfolio"]');
+
+  if (!developerLink) return;
+
+  developerLink.href = "https://anwarhegazy-porfolio.vercel.app/";
+  developerLink.target = "_blank";
+  developerLink.rel = "noopener noreferrer";
+  developerLink.textContent = "Designed & Developed by Anwar Hegazy";
+}
+
 renderCart();
 setLanguage("en");
-loadProductsFromDB();
+fixDeveloperFooterLink();
